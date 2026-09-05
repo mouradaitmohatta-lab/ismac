@@ -1,0 +1,33 @@
+[
+  {
+    "id": "REC-20260905_014345",
+    "doc_number": "01 / 2026",
+    "doc_type": "audiovisuel",
+    "beneficiary": "ABDESSAMAD MOUTEI",
+    "date": "10/07/2026",
+    "items_count": 3,
+    "items": [
+      {
+        "name": "Caméras SONY XDCAM Z280",
+        "quantity": 3,
+        "observations": "",
+        "serial_number": "SN-01"
+      },
+      {
+        "name": "Batterie BP-U60",
+        "quantity": 7,
+        "observations": "",
+        "serial_number": "N/A"
+      },
+      {
+        "name": "Trépied Manfrotto Nitrotech N12",
+        "quantity": 3,
+        "observations": "",
+        "serial_number": "SN-02"
+      }
+    ],
+    "filename": "ISMAC_Decharge_AUDIOVISUEL_ABDESSAMAD_MOUTEI_20260905_014345.docx",
+    "file_url": "/output/ISMAC_Decharge_AUDIOVISUEL_ABDESSAMAD_MOUTEI_20260905_014345.docx",
+    "created_at": "2026-09-05T01:43:46.008950"
+  }
+]

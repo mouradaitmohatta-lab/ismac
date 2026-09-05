@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISMAC — Gestion Logistique & Décharges Officielles</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', 'Tajawal', sans-serif; }
+    .card-hover { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.1); }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col antialiased">
+
+  <!-- TOP HEADER -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-sm tracking-wider">
+          ISMAC
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-900 text-sm">Institut Supérieur des Métiers de l'Audiovisuel et du Cinéma</span>
+            <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200">Magasin & Logistique</span>
+          </div>
+          <p class="text-xs text-slate-500">Générateur Automatique de Décharges & PV d'Affectation</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full space-y-6">
+
+    <!-- STEP 1: CHOOSE DOCUMENT TYPE (5 DISTINCT FORMS) -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+          <span class="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs">1</span>
+          Choisissez la Décharge ou le PV à établir
+        </h2>
+        <span class="text-xs text-indigo-600 font-semibold" id="current-doc-label">Modèle sélectionné : Décharge Audiovisuelle</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <!-- 1. Décharge Audiovisuelle -->
+        <div onclick="selectDocument('audiovisuel')" id="tab-audiovisuel" class="doc-tab border-2 border-indigo-600 bg-indigo-50/60 rounded-xl p-3.5 cursor-pointer card-hover transition">
+          <div class="text-xl mb-1">🎥</div>
+          <h4 class="font-bold text-xs text-slate-900">Décharge Audiovisuelle</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5">Caméras, Optiques, Micros, Trépieds...</p>
+        </div>
+
+        <!-- 2. Décharge Fourniture Informatique -->
+        <div onclick="selectDocument('informatique')" id="tab-informatique" class="doc-tab border border-slate-200 bg-white rounded-xl p-3.5 cursor-pointer card-hover transition">
+          <div class="text-xl mb-1">💻</div>
+          <h4 class="font-bold text-xs text-slate-900">Décharge Fourniture Info</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5">Clés USB, Disques, Câbles, Consommables...</p>
+        </div>
+
+        <!-- 3. Décharge Détaillée (N° Série) -->
+        <div onclick="selectDocument('detaillee')" id="tab-detaillee" class="doc-tab border border-slate-200 bg-white rounded-xl p-3.5 cursor-pointer card-hover transition">
+          <div class="text-xl mb-1">📋</div>
+          <h4 class="font-bold text-xs text-slate-900">Décharge Détaillée</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5">Avec Numéros de Série & Visa ISMAC</p>
+        </div>
+
+        <!-- 4. PV d'Affectation -->
+        <div onclick="selectDocument('pv_affectation')" id="tab-pv_affectation" class="doc-tab border border-slate-200 bg-white rounded-xl p-3.5 cursor-pointer card-hover transition">
+          <div class="text-xl mb-1">📑</div>
+          <h4 class="font-bold text-xs text-slate-900">PV d'Affectation</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5">Affectation régie, studios & salles</p>
+        </div>
+
+        <!-- 5. Bon de Sortie -->
+        <div onclick="selectDocument('bon_sortie')" id="tab-bon_sortie" class="doc-tab border border-slate-200 bg-white rounded-xl p-3.5 cursor-pointer card-hover transition">
+          <div class="text-xl mb-1">📦</div>
+          <h4 class="font-bold text-xs text-slate-900">Bon de Sortie Magasin</h4>
+          <p class="text-[11px] text-slate-500 mt-0.5">Sortie matériel permanente / tournage</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: DYNAMIC CUSTOM FORM PER DOCUMENT -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+        <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+          <span class="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs">2</span>
+          Formulaire Spécifique à cette Décharge
+        </h2>
+        <span class="text-xs text-slate-400">Les champs s'adaptent au modèle choisi</span>
+      </div>
+
+      <!-- FORM 1 & 2: STANDARD DECHARGE (AUDIOVISUEL & INFORMATIQUE) -->
+      <div id="form-standard" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">RÉCUPÉRÉ PAR :</label>
+          <input type="text" id="std-beneficiaire" list="ben-list" placeholder="ex: ABDESSAMAD MOUTEI" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">DATE DE SORTIE :</label>
+          <input type="text" id="std-date" placeholder="JJ/MM/AAAA" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500">
+        </div>
+      </div>
+
+      <!-- FORM 3: DECHARGE DETAILLEE -->
+      <div id="form-detaillee" class="hidden space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">VILLE ET DATE (En-tête droite)</label>
+            <input type="text" id="det-ville-date" value="Rabat, le 09/02/2026" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">CIVILITÉ & BÉNÉFICIAIRE</label>
+            <div class="flex gap-2">
+              <select id="det-civilite" class="px-2 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+                <option value="Mme">Mme.</option>
+                <option value="M">M.</option>
+              </select>
+              <input type="text" id="det-beneficiaire" list="ben-list" placeholder="ex: YASMINE SAYAGH" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">POUR : (Projet / Entité)</label>
+            <input type="text" id="det-pour" value="CCM" placeholder="ex: CCM / Projet Fiction" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">EN DATE DU :</label>
+            <input type="text" id="det-en-date-du" value="09 FÉVRIER 2026" placeholder="ex: 09 FÉVRIER 2026" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">N° DE SÉRIE DES ÉLÉMENTS :</label>
+            <input type="text" id="det-num-serie" placeholder="ex: CANON 5D M III ( 283022003512 ) + OBJECTIF 50mm (1078811)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">DÉSIGNATION GLOBALE (Ligne DÉSIGNATION) :</label>
+          <input type="text" id="det-designation" placeholder="Sera calculé automatiquement depuis les matériels choisis..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+      </div>
+
+      <!-- FORM 4: PV D'AFFECTATION -->
+      <div id="form-pv" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">N° DU PV :</label>
+          <input type="text" id="pv-num" value="01 / 2026" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">OBJET DU MOUVEMENT :</label>
+          <input type="text" id="pv-objet" value="Installation et affectation des équipements audiovisuel" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">LIEU D'INSTALLATION :</label>
+          <input type="text" id="pv-lieu" placeholder="ex: Plateau 1 / Régie Son" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">DATE D'EXÉCUTION :</label>
+          <input type="text" id="pv-date" placeholder="JJ/MM/AAAA" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-bold text-slate-700 mb-1">RESPONSABLE DE LA MISE EN PLACE :</label>
+          <input type="text" id="pv-resp" list="ben-list" placeholder="Nom du responsable" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+      </div>
+
+      <!-- FORM 5: BON DE SORTIE -->
+      <div id="form-sortie" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">N° BON DE SORTIE :</label>
+          <input type="text" id="sortie-num" value="01 / 2026" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">BÉNÉFICIAIRE :</label>
+          <input type="text" id="sortie-beneficiaire" list="ben-list" placeholder="Nom du bénéficiaire" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">MOTIF DE LA SORTIE :</label>
+          <input type="text" id="sortie-motif" value="Affectation permanente" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+        <div class="sm:col-span-3">
+          <label class="block text-xs font-bold text-slate-700 mb-1">DATE DE SORTIE DU MAGASIN :</label>
+          <input type="text" id="sortie-date" placeholder=".... / 06 / 2026" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold">
+        </div>
+      </div>
+
+      <datalist id="ben-list"></datalist>
+    </section>
+
+    <!-- STEP 3: VISUAL CATALOG WITH STRICT CATEGORY TARGETING -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- CATALOG (8 cols) -->
+      <div class="lg:col-span-8 space-y-4">
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-700" id="catalog-header-title">
+              Matériels Disponibles pour cette décharge
+            </h3>
+            <span class="text-[11px] text-slate-400">Cliquez sur l'image ou le bouton pour ajouter</span>
+          </div>
+          <input type="text" id="search-box" oninput="renderCatalog()" placeholder="Rechercher par nom, marque, référence ou n° de série..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5"></div>
+      </div>
+
+      <!-- BASKET & LIVE DOCUMENT GENERATION (4 cols) -->
+      <div class="lg:col-span-4 sticky top-20">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+          <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+            <h3 class="font-bold text-xs">Articles Ajoutés à la Décharge</h3>
+            <span id="basket-badge" class="px-2 py-0.5 bg-indigo-500 text-white rounded-full text-[10px] font-bold">0</span>
+          </div>
+
+          <div id="basket-container" class="p-3.5 overflow-y-auto space-y-2.5 flex-1 min-h-[160px] max-h-[350px] divide-y divide-slate-100">
+            <div class="text-center py-8 text-slate-400 text-xs">Aucun article sélectionné.</div>
+          </div>
+
+          <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
+            <div class="flex justify-between items-center text-xs font-semibold text-slate-600">
+              <span>Total éléments :</span>
+              <span id="basket-total" class="font-bold text-slate-900">0</span>
+            </div>
+
+            <!-- Generate Document Button -->
+            <button onclick="generateExactDocument()" class="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition card-hover">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+              <span id="btn-generate-text">Imprimer / Enregistrer PDF Officiel</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const inventory = [
+  {
+    "id": "AV-001",
+    "name": "Caméras SONY XDCAM Z280",
+    "category": "audiovisuel",
+    "subcategory": "Caméras",
+    "serial_number": "SN-SONY-Z280-4921",
+    "inventory_number": "ISMAC-AV-2026-001",
+    "stock": 5,
+    "unit": "Unité",
+    "icon": "camera",
+    "image_url": "https://images.unsplash.com/photo-1589872307379-0ffdf9829123?w=400&auto=format&fit=crop&q=80",
+    "description": "Caméra de poing 4K 3CMOS 1/2 pouce avec zoom 17x"
+  },
+  {
+    "id": "AV-002",
+    "name": "CANON 5D Mark III + Objectif 50mm",
+    "category": "audiovisuel",
+    "subcategory": "Caméras",
+    "serial_number": "283022003512 / OBJ: 1078811",
+    "inventory_number": "ISMAC-AV-2026-002",
+    "stock": 3,
+    "unit": "Kit",
+    "icon": "camera",
+    "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&auto=format&fit=crop&q=80",
+    "description": "Boîtier reflex plein format avec objectif Canon EF 50mm f/1.4"
+  },
+  {
+    "id": "AV-003",
+    "name": "Microphone Sennheiser MKH 416",
+    "category": "audiovisuel",
+    "subcategory": "Son",
+    "serial_number": "SN-SENN-416-883",
+    "inventory_number": "ISMAC-AV-2026-015",
+    "stock": 8,
+    "unit": "Unité",
+    "icon": "mic",
+    "image_url": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=400&auto=format&fit=crop&q=80",
+    "description": "Microphone canon professionnel supercardioïde court"
+  },
+  {
+    "id": "AV-004",
+    "name": "Trépied vidéo Manfrotto Nitrotech N12",
+    "category": "audiovisuel",
+    "subcategory": "Machinerie",
+    "serial_number": "SN-MANF-N12-092",
+    "inventory_number": "ISMAC-AV-2026-030",
+    "stock": 4,
+    "unit": "Unité",
+    "icon": "tripod",
+    "image_url": "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?w=400&auto=format&fit=crop&q=80",
+    "description": "Trépied carbone double branche avec tête fluide piston azote"
+  },
+  {
+    "id": "AV-005",
+    "name": "Batterie Sony BP-U60",
+    "category": "audiovisuel",
+    "subcategory": "Énergie",
+    "serial_number": "SN-BPU60-VARIOUS",
+    "inventory_number": "ISMAC-AV-2026-045",
+    "stock": 14,
+    "unit": "Unité",
+    "icon": "battery",
+    "image_url": "https://images.unsplash.com/photo-1619725002198-6a689b72f41d?w=400&auto=format&fit=crop&q=80",
+    "description": "Batterie lithium-ion 56 Wh pour caméras XDCAM"
+  },
+  {
+    "id": "AV-006",
+    "name": "Cartes mémoires Sony SXS-1 64GB",
+    "category": "audiovisuel",
+    "subcategory": "Support",
+    "serial_number": "SN-SXS-64GB",
+    "inventory_number": "ISMAC-AV-2026-050",
+    "stock": 12,
+    "unit": "Unité",
+    "icon": "sd-card",
+    "image_url": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400&auto=format&fit=crop&q=80",
+    "description": "Carte mémoire professionnelle SxS haute vitesse 440 Mo/s"
+  },
+  {
+    "id": "AV-007",
+    "name": "Câble Audio XLR Neutrik 5m",
+    "category": "audiovisuel",
+    "subcategory": "Câblage",
+    "serial_number": "N/A",
+    "inventory_number": "ISMAC-AV-2026-060",
+    "stock": 25,
+    "unit": "Unité",
+    "icon": "cable",
+    "image_url": "https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&auto=format&fit=crop&q=80",
+    "description": "Câble micro symétrique blindé avec connecteurs Neutrik"
+  },
+  {
+    "id": "AV-008",
+    "name": "Projecteur LED Aputure Amaran 200d",
+    "category": "audiovisuel",
+    "subcategory": "Éclairage",
+    "serial_number": "SN-APUT-200D-11",
+    "inventory_number": "ISMAC-AV-2026-070",
+    "stock": 6,
+    "unit": "Kit",
+    "icon": "sun",
+    "image_url": "https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?w=400&auto=format&fit=crop&q=80",
+    "description": "Éclairage LED continu 200W Daylight avec réflecteur"
+  },
+  {
+    "id": "INF-001",
+    "name": "Clé USB 64GB SanDisk Ultra",
+    "category": "informatique",
+    "subcategory": "Stockage",
+    "serial_number": "SN-SD-64U",
+    "inventory_number": "ISMAC-INF-2026-001",
+    "stock": 20,
+    "unit": "Unité",
+    "icon": "usb",
+    "image_url": "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?w=400&auto=format&fit=crop&q=80",
+    "description": "Clé USB 3.0 haute vitesse transfert 130 Mo/s"
+  },
+  {
+    "id": "INF-002",
+    "name": "Disque Dur Externe 2TB LaCie Rugged",
+    "category": "informatique",
+    "subcategory": "Stockage",
+    "serial_number": "SN-LACIE-2TB-09",
+    "inventory_number": "ISMAC-INF-2026-005",
+    "stock": 7,
+    "unit": "Unité",
+    "icon": "hard-drive",
+    "image_url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&auto=format&fit=crop&q=80",
+    "description": "Disque dur tout-terrain résistant aux chocs USB-C"
+  },
+  {
+    "id": "INF-003",
+    "name": "Câble HDMI 2.1 4K 60Hz 3m",
+    "category": "informatique",
+    "subcategory": "Câblage",
+    "serial_number": "N/A",
+    "inventory_number": "ISMAC-INF-2026-012",
+    "stock": 15,
+    "unit": "Unité",
+    "icon": "monitor",
+    "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&auto=format&fit=crop&q=80",
+    "description": "Câble haute résolution blindé pour régies et écrans"
+  },
+  {
+    "id": "INF-004",
+    "name": "Adaptateur Multiport USB-C vers HDMI / USB",
+    "category": "informatique",
+    "subcategory": "Accessoires",
+    "serial_number": "N/A",
+    "inventory_number": "ISMAC-INF-2026-018",
+    "stock": 10,
+    "unit": "Unité",
+    "icon": "cpu",
+    "image_url": "https://images.unsplash.com/photo-1588508065123-287b28e013da?w=400&auto=format&fit=crop&q=80",
+    "description": "Hub adaptateur aluminium pour stations de montage"
+  },
+  {
+    "id": "BUR-001",
+    "name": "Ramette de Papier A4 80g Double A",
+    "category": "bureau",
+    "subcategory": "Papeterie",
+    "serial_number": "N/A",
+    "inventory_number": "ISMAC-BUR-2026-001",
+    "stock": 50,
+    "unit": "Ramette (500 f)",
+    "icon": "file-text",
+    "image_url": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&auto=format&fit=crop&q=80",
+    "description": "Papier blanc supérieur pour impression administrative"
+  },
+  {
+    "id": "BUR-002",
+    "name": "Boîte de 50 Stylos à bille BIC Cristal Bleu",
+    "category": "bureau",
+    "subcategory": "Écriture",
+    "serial_number": "N/A",
+    "inventory_number": "ISMAC-BUR-2026-005",
+    "stock": 18,
+    "unit": "Boîte",
+    "icon": "pen-tool",
+    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
+    "description": "Stylos à pointe moyenne pour administration et examens"
+  },
+  {
+    "id": "BUR-003",
+    "name": "Cartouche d'encre HP LaserJet Noir Originale",
+    "category": "bureau",
+    "subcategory": "Consommables",
+    "serial_number": "SN-TONER-HP-85A",
+    "inventory_number": "ISMAC-BUR-2026-010",
+    "stock": 8,
+    "unit": "Unité",
+    "icon": "printer",
+    "image_url": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&auto=format&fit=crop&q=80",
+    "description": "Toner noir haute capacité pour imprimantes administratives"
+  },
+  {
+    "id": "BUR-004",
+    "name": "Classeurs à levier dos 80mm A4",
+    "category": "bureau",
+    "subcategory": "Classement",
+    "serial_number": "N/A",
+    "inventory_number": "ISMAC-BUR-2026-015",
+    "stock": 35,
+    "unit": "Unité",
+    "icon": "folder",
+    "image_url": "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?w=400&auto=format&fit=crop&q=80",
+    "description": "Classeurs rigides pour archivage des dossiers et PV"
+  }
+]
+;
+    const beneficiaries = [
+  {
+    "id": "BEN-01",
+    "name": "ABDESSAMAD MOUTEI",
+    "role": "Étudiant",
+    "department": "Filière Image / Réalisation",
+    "cin": "A123456"
+  },
+  {
+    "id": "BEN-02",
+    "name": "MOHAMED SAID",
+    "role": "Personnel Administratif",
+    "department": "Service Informatique & Réseau",
+    "cin": "B654321"
+  },
+  {
+    "id": "BEN-03",
+    "name": "YASMINE SAYAGH",
+    "role": "Intervenante / Réalisatrice",
+    "department": "CCM (Centre Cinématographique Marocain)",
+    "cin": "C987654"
+  },
+  {
+    "id": "BEN-04",
+    "name": "AMINE TAZI",
+    "role": "Enseignant",
+    "department": "Département Son & Post-production",
+    "cin": "D112233"
+  },
+  {
+    "id": "BEN-05",
+    "name": "FATIMA-ZAHRA EL ALAMI",
+    "role": "Étudiante",
+    "department": "Filière Montage & Effets Spéciaux",
+    "cin": "E445566"
+  }
+]
+;
+    let currentDoc = 'audiovisuel';
+    let basket = {};
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
+      const dateFr = `${dd}/${mm}/${yyyy}`;
+
+      document.getElementById('std-date').value = dateFr;
+      document.getElementById('pv-date').value = dateFr;
+      document.getElementById('sortie-date').value = dateFr;
+      document.getElementById('det-ville-date').value = `Rabat, le ${dateFr}`;
+
+      const dl = document.getElementById('ben-list');
+      beneficiaries.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b.name;
+        opt.label = `${b.name} (${b.role})`;
+        dl.appendChild(opt);
+      });
+
+      selectDocument('audiovisuel');
+    });
+
+    function selectDocument(docKey) {
+      currentDoc = docKey;
+
+      // Update Tabs styling
+      ['audiovisuel', 'informatique', 'detaillee', 'pv_affectation', 'bon_sortie'].forEach(k => {
+        const el = document.getElementById(`tab-${k}`);
+        if (k === docKey) {
+          el.className = "doc-tab border-2 border-indigo-600 bg-indigo-50/60 rounded-xl p-3.5 cursor-pointer card-hover transition";
+        } else {
+          el.className = "doc-tab border border-slate-200 bg-white rounded-xl p-3.5 cursor-pointer card-hover transition";
+        }
+      });
+
+      // Toggle Forms
+      document.getElementById('form-standard').classList.add('hidden');
+      document.getElementById('form-detaillee').classList.add('hidden');
+      document.getElementById('form-pv').classList.add('hidden');
+      document.getElementById('form-sortie').classList.add('hidden');
+
+      const titleEl = document.getElementById('current-doc-label');
+      const headerTitle = document.getElementById('catalog-header-title');
+
+      if (docKey === 'audiovisuel') {
+        document.getElementById('form-standard').classList.remove('hidden');
+        titleEl.textContent = "Modèle : BON DE DÉCHARGE DE MATÉRIEL AUDIOVISUEL";
+        headerTitle.textContent = "Matériel Audiovisuel (Caméras, Optiques, Son, Machinerie)";
+      } else if (docKey === 'informatique') {
+        document.getElementById('form-standard').classList.remove('hidden');
+        titleEl.textContent = "Modèle : BON DE DÉCHARGE DE FOURNITURE INFORMATIQUE";
+        headerTitle.textContent = "Fournitures Informatiques & Consommables de Bureau";
+      } else if (docKey === 'detaillee') {
+        document.getElementById('form-detaillee').classList.remove('hidden');
+        titleEl.textContent = "Modèle : BON DE DÉCHARGE DU MATÉRIEL (DÉTAILLÉE)";
+        headerTitle.textContent = "Sélection des matériels avec N° de série pour la décharge détaillée";
+      } else if (docKey === 'pv_affectation') {
+        document.getElementById('form-pv').classList.remove('hidden');
+        titleEl.textContent = "Modèle : PROCÈS-VERBAL D'AFFECTATION MATÉRIEL";
+        headerTitle.textContent = "Équipements à affecter aux studios et salles";
+      } else if (docKey === 'bon_sortie') {
+        document.getElementById('form-sortie').classList.remove('hidden');
+        titleEl.textContent = "Modèle : BON DE SORTIE DE MATÉRIEL";
+        headerTitle.textContent = "Matériel pour sortie définitive ou temporaire du magasin";
+      }
+
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const q = document.getElementById('search-box').value.toLowerCase();
+      const grid = document.getElementById('catalog-grid');
+      grid.innerHTML = '';
+
+      const filtered = inventory.filter(it => {
+        // Filter strictly by document purpose
+        if (currentDoc === 'audiovisuel' || currentDoc === 'detaillee') {
+          if (it.category !== 'audiovisuel') return false;
+        } else if (currentDoc === 'informatique') {
+          if (it.category !== 'informatique' && it.category !== 'bureau') return false;
+        }
+        const matchQ = it.name.toLowerCase().includes(q) || (it.serial_number && it.serial_number.toLowerCase().includes(q));
+        return matchQ;
+      });
+
+      filtered.forEach(it => {
+        const inB = basket[it.id];
+        const qty = inB ? inB.quantity : 0;
+        const card = document.createElement('div');
+        card.className = "bg-white border border-slate-200 rounded-xl overflow-hidden card-hover flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="h-28 w-full bg-slate-100 relative">
+              <img src="${it.image_url}" class="w-full h-full object-cover">
+              <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded text-[9px] font-bold bg-slate-900/80 text-white">${it.subcategory || it.category}</span>
+            </div>
+            <div class="p-3">
+              <h5 class="font-bold text-xs text-slate-900 line-clamp-2">${it.name}</h5>
+              <div class="text-[10px] text-slate-400 font-mono mt-0.5">${it.inventory_number || ''}</div>
+            </div>
+          </div>
+          <div class="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+            ${qty > 0 ? `
+              <div class="flex items-center justify-between w-full bg-indigo-50 border border-indigo-200 rounded-lg px-2 py-1">
+                <button onclick="changeQty('${it.id}', -1)" class="w-5 h-5 rounded bg-white font-bold text-xs text-indigo-700 shadow-sm">-</button>
+                <span class="text-xs font-bold text-indigo-900">${qty}</span>
+                <button onclick="changeQty('${it.id}', 1)" class="w-5 h-5 rounded bg-indigo-600 font-bold text-xs text-white shadow-sm">+</button>
+              </div>
+            ` : `
+              <button onclick="changeQty('${it.id}', 1)" class="w-full py-1 rounded-lg bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold transition">
+                + Ajouter
+              </button>
+            `}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function changeQty(id, delta) {
+      const it = inventory.find(i => i.id === id);
+      if (!it) return;
+      if (!basket[id]) basket[id] = { ...it, quantity: 0, observations: '' };
+      basket[id].quantity += delta;
+      if (basket[id].quantity <= 0) delete basket[id];
+
+      // Auto update detaillee designation and serials if in detaillee mode
+      if (currentDoc === 'detaillee') {
+        const bItems = Object.values(basket);
+        const desig = bItems.map(i => `${i.quantity > 1 ? i.quantity + ' ' : ''}${i.name.toUpperCase()}`).join(' + ');
+        const serials = bItems.filter(i => i.serial_number && i.serial_number !== 'N/A').map(i => `${i.name} ( ${i.serial_number} )`).join(' + ');
+        document.getElementById('det-designation').value = desig;
+        if (serials) document.getElementById('det-num-serie').value = serials;
+      }
+
+      renderCatalog();
+      renderBasket();
+    }
+
+    function renderBasket() {
+      const c = document.getElementById('basket-container');
+      const badge = document.getElementById('basket-badge');
+      const tot = document.getElementById('basket-total');
+      const items = Object.values(basket);
+
+      badge.textContent = items.length;
+      tot.textContent = items.reduce((s, i) => s + i.quantity, 0);
+
+      if (items.length === 0) {
+        c.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs">Aucun article sélectionné.</div>';
+        return;
+      }
+
+      c.innerHTML = '';
+      items.forEach(it => {
+        const d = document.createElement('div');
+        d.className = "pt-2 flex flex-col gap-1";
+        d.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-slate-900 line-clamp-1">${it.name}</span>
+            <button onclick="changeQty('${it.id}', -${it.quantity})" class="text-slate-400 hover:text-red-600 text-xs">✕</button>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono text-[10px]">${it.inventory_number || ''}</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="changeQty('${it.id}', -1)" class="w-5 h-5 rounded bg-slate-100 font-bold text-xs">-</button>
+              <span class="font-bold text-xs w-4 text-center">${it.quantity}</span>
+              <button onclick="changeQty('${it.id}', 1)" class="w-5 h-5 rounded bg-slate-900 text-white font-bold text-xs">+</button>
+            </div>
+          </div>
+        `;
+        c.appendChild(d);
+      });
+    }
+
+    // EXACT PRINT & DOCUMENT RENDERING MATCHING ORIGINAL FILES
+    function generateExactDocument() {
+      const items = Object.values(basket);
+      if (items.length === 0) {
+        alert("Veuillez sélectionner au moins un article avant d'imprimer la décharge.");
+        return;
+      }
+
+      const printWin = window.open('', '_blank');
+      let docHtml = '';
+
+      if (currentDoc === 'audiovisuel') {
+        const ben = document.getElementById('std-beneficiaire').value.trim() || '...........................................';
+        const dateVal = document.getElementById('std-date').value.trim() || '10/07/2026';
+        const rows = items.map(i => `
+          <tr>
+            <td style="border: 1px solid #000; padding: 4px 8px; font-size: 13px;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 13px;">${i.quantity}</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 13px;"></td>
+          </tr>
+        `).join('');
+
+        docHtml = `
+          <div style="font-family: Arial, sans-serif; margin: 35px 40px; color: #000;">
+            <div style="font-weight: bold; font-size: 14px; margin-bottom: 22px;">BON DE DÉCHARGE DE MATÉRIEL AUDIOVISUEL</div>
+            <div style="font-weight: bold; font-size: 11.5px; margin-bottom: 5px;">RÉCUPÉRÉ PAR  : ${ben.toUpperCase()}</div>
+            <div style="font-weight: bold; font-size: 11.5px; margin-bottom: 18px;">DATE DE SORTIE : ${dateVal}</div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; font-size: 12px; background: #fafafa; width: 65%;">Matériel</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 12px; background: #fafafa; width: 15%;">Quantité</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 12px; background: #fafafa; width: 20%;">Observations</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+
+            <div style="margin-top: 60px; text-align: right; font-weight: bold; font-size: 12px; margin-right: 20px;">
+              La personne concernée
+            </div>
+
+            <div style="margin-top: 80px; border-top: 1px solid #000; padding-top: 10px; display: flex; justify-content: space-between; font-size: 9px; line-height: 1.4;">
+              <div style="text-align: left;">Tél. : 212 (0)5 37 27 17 00<br>Fax : 212 (0)5 37 77 38 65</div>
+              <div style="text-align: center;">ISMAC - Av. Allal El Fassi, Cité Al Irfane B.P 6598 - Souissi, Rabat/Maroc<br>شارع علال الفاسي - مدينة العرفان السويسي - الرباط - المغرب - ص.ب 6598</div>
+              <div style="text-align: right;">E-mail: info@ismac.ac.ma<br>www.ismac.ac.ma</div>
+            </div>
+          </div>
+        `;
+
+      } else if (currentDoc === 'informatique') {
+        const ben = document.getElementById('std-beneficiaire').value.trim() || 'MOHAMED SAID';
+        const dateVal = document.getElementById('std-date').value.trim() || '05/05/2026';
+        const rows = items.map(i => `
+          <tr>
+            <td style="border: 1px solid #000; padding: 4px 8px; font-size: 13px;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 13px;">${i.quantity}</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 13px;">—--------------</td>
+          </tr>
+        `).join('');
+
+        docHtml = `
+          <div style="font-family: Arial, sans-serif; margin: 35px 40px; color: #000;">
+            <div style="font-weight: bold; font-size: 14px; margin-bottom: 22px;">BON DE DÉCHARGE DE FOURNITURE INFORMATIQUE</div>
+            <div style="font-weight: bold; font-size: 11.5px; margin-bottom: 5px;">RÉCUPÉRÉ PAR  : ${ben.toUpperCase()} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div style="font-weight: bold; font-size: 11.5px; margin-bottom: 18px;">DATE DE SORTIE : ${dateVal}</div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; font-size: 12px; background: #fafafa; width: 65%;">Matériel</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 12px; background: #fafafa; width: 15%;">Quantité</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 12px; background: #fafafa; width: 20%;">Observations</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+
+            <div style="margin-top: 60px; text-align: right; font-weight: bold; font-size: 12px; margin-right: 20px;">
+              La personne concernée
+            </div>
+
+            <div style="margin-top: 80px; border-top: 1px solid #000; padding-top: 10px; display: flex; justify-content: space-between; font-size: 9px; line-height: 1.4;">
+              <div style="text-align: left;">Tél. : 212 (0)5 37 27 17 00<br>Fax : 212 (0)5 37 77 38 65</div>
+              <div style="text-align: center;">ISMAC - Av. Allal El Fassi, Cité Al Irfane B.P 6598 - Souissi, Rabat/Maroc<br>شارع علال الفاسي - مدينة العرفان السويسي - الرباط - المغرب - ص.ب 6598</div>
+              <div style="text-align: right;">E-mail: info@ismac.ac.ma<br>www.ismac.ac.ma</div>
+            </div>
+          </div>
+        `;
+
+      } else if (currentDoc === 'detaillee') {
+        const villeDate = document.getElementById('det-ville-date').value || 'Rabat, le 09/02/2026';
+        const civ = document.getElementById('det-civilite').value || 'Mme';
+        const ben = document.getElementById('det-beneficiaire').value || 'YASMINE SAYAGH';
+        const pour = document.getElementById('det-pour').value || 'CCM';
+        const enDate = document.getElementById('det-en-date-du').value || '09 FÉVRIER 2026';
+        const numSer = document.getElementById('det-num-serie').value || 'CANON 5D M III ( 283022003512 ) + OBJECTIF 50mm (1078811)';
+        const desig = document.getElementById('det-designation').value || 'CANON 5D M III + OBJECTIF CANON 50mm + 2 BATTERIES + CHARGEUR + SAC + CARTE SD 64GB + LECTEUR CARTE MÉMOIRE';
+
+        docHtml = `
+          <div style="font-family: Arial, sans-serif; margin: 35px 50px; color: #000; line-height: 1.6;">
+            <div style="text-align: right; font-size: 13px; margin-bottom: 25px;">${villeDate}</div>
+            <div style="text-align: center; font-weight: bold; font-size: 16px; margin-bottom: 30px;">
+              BON DE DÉCHARGE<br>DU MATÉRIEL
+            </div>
+
+            <div style="font-size: 12.5px; margin-bottom: 12px;"><strong>DÉSIGNATION&nbsp;:</strong> &nbsp;${desig}</div>
+            <div style="font-size: 12.5px; margin-bottom: 12px;"><strong>RÉCUPÉRÉ PAR &nbsp;${civ}.&nbsp;:</strong> &nbsp;${ben.toUpperCase()}</div>
+            <div style="font-size: 12.5px; margin-bottom: 12px;"><strong>POUR :</strong> &nbsp;${pour}</div>
+            <div style="font-size: 12.5px; margin-bottom: 12px; padding-left: 40px;"><strong>EN DATE DU&nbsp;:</strong> &nbsp;${enDate}</div>
+            <div style="font-size: 12.5px; margin-bottom: 12px; padding-left: 40px;"><strong>N° DE SERIE &nbsp;:</strong> &nbsp;${numSer} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VU PAR ISMAC…………………………………………………………………</div>
+
+            <div style="margin-top: 60px; display: flex; justify-content: space-between; font-weight: bold; font-size: 13px;">
+              <div style="margin-left: 50px;">Vu par ISMAC</div>
+              <div style="margin-right: 50px;">La personne concernée</div>
+            </div>
+          </div>
+        `;
+
+      } else if (currentDoc === 'pv_affectation') {
+        const numPv = document.getElementById('pv-num').value || '01 / 2026';
+        const obj = document.getElementById('pv-objet').value || 'Installation et affectation des équipements audiovisuel';
+        const lieu = document.getElementById('pv-lieu').value || '...........................................';
+        const dateEx = document.getElementById('pv-date').value || '...........................................';
+        const resp = document.getElementById('pv-resp').value || '...........................................';
+
+        const rows = items.map(i => `
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px; font-size: 12px;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 12px;">${i.inventory_number || 'ISMAC0001'}</td>
+            <td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 12px;">${String(i.quantity).padStart(2, '0')}</td>
+            <td style="border: 1px solid #000; padding: 6px; font-size: 12px;">${lieu}</td>
+          </tr>
+        `).join('');
+
+        docHtml = `
+          <div style="font-family: Arial, sans-serif; margin: 30px 40px; color: #000;">
+            <div style="font-weight: bold; font-size: 13.5px; margin-bottom: 12px;">
+              PROCÈS-VERBAL D'AFFECTATION MATÉRIEL &nbsp;&nbsp; N° : ${numPv}
+            </div>
+            <div style="font-size: 11.5px; margin-bottom: 4px;"><strong>Objet du mouvement :</strong> ${obj}</div>
+            <div style="font-size: 11.5px; margin-bottom: 4px;"><strong>Lieu d'installation :</strong> ${lieu}</div>
+            <div style="font-size: 11.5px; margin-bottom: 4px;"><strong>Date d'exécution :</strong> ${dateEx}</div>
+            <div style="font-size: 11.5px; margin-bottom: 14px;"><strong>Responsable de la mise en place :</strong> ${resp}</div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th style="border: 1px solid #000; padding: 5px; font-size: 11px; background: #f2f2f2; width: 40%; text-align: left;">Désignation du Matériel</th>
+                  <th style="border: 1px solid #000; padding: 5px; font-size: 11px; background: #f2f2f2; width: 25%;">N° d'Inventaire</th>
+                  <th style="border: 1px solid #000; padding: 5px; font-size: 11px; background: #f2f2f2; width: 15%;">Quantité</th>
+                  <th style="border: 1px solid #000; padding: 5px; font-size: 11px; background: #f2f2f2; width: 20%;">Localisation</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+
+            <div style="margin-top: 50px; display: flex; justify-content: space-between; font-weight: bold; font-size: 11px; text-align: center;">
+              <div style="width: 30%;">Le magasinier<br><br>........................................</div>
+              <div style="width: 40%;">Responsable de la mise en place<br><br>........................................</div>
+              <div style="width: 30%;">Administration<br><br>........................................</div>
+            </div>
+
+            <div style="margin-top: 70px; border-top: 1px solid #000; padding-top: 8px; display: flex; justify-content: space-between; font-size: 8.5px;">
+              <div>Siège - Rabat : Av. Allal Al Fassi, Cité Al Irfane, BP 6598, Rabat / Maroc (+212 5 37 27 17 00)</div>
+              <div>Annexe - Dakhla : 21, rue Al Walaa, Dakhla</div>
+              <div>www.ismac.ma | info@ismac.ma</div>
+            </div>
+          </div>
+        `;
+
+      } else if (currentDoc === 'bon_sortie') {
+        const numS = document.getElementById('sortie-num').value || '01 / 2026';
+        const ben = document.getElementById('sortie-beneficiaire').value || '.......................................................................................';
+        const motif = document.getElementById('sortie-motif').value || 'Affectation permanente';
+        const dateS = document.getElementById('sortie-date').value || '.... / 06 / 2026';
+
+        const rows = items.map(i => `
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px; font-size: 12px;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 12px;">${i.inventory_number || ''}</td>
+            <td style="border: 1px solid #000; padding: 6px; text-align: center; font-size: 12px;">${String(i.quantity).padStart(2, '0')}</td>
+            <td style="border: 1px solid #000; padding: 6px; font-size: 12px;"></td>
+          </tr>
+        `).join('');
+
+        docHtml = `
+          <div style="font-family: Arial, sans-serif; margin: 30px 40px; color: #000;">
+            <div style="font-weight: bold; font-size: 13.5px; margin-bottom: 12px;">
+              BON DE SORTIE DE MATÉRIEL &nbsp;&nbsp; N° : ${numS}
+            </div>
+            <div style="font-size: 11.5px; margin-bottom: 4px;"><strong>Bénéficiaire :</strong> ${ben.toUpperCase()}</div>
+            <div style="font-size: 11.5px; margin-bottom: 4px;"><strong>Motif de la sortie :</strong> ${motif}</div>
+            <div style="font-size: 11.5px; margin-bottom: 14px;"><strong>Date de sortie du magasin :</strong> ${dateS}</div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th style="border: 1px solid #000; padding: 5px; font-size: 11px; background: #f2f2f2; width: 45%; text-align: left;">Désignation précise du matériel</th>
+                  <th style="border: 1px solid #000; padding: 5px; font-size: 11px; background: #f2f2f2; width: 25%;">N° d'Inventaire</th>
+                  <th style="border: 1px solid #000; padding: 5px; font-size: 11px; background: #f2f2f2; width: 15%;">Quantité</th>
+                  <th style="border: 1px solid #000; padding: 5px; font-size: 11px; background: #f2f2f2; width: 15%;">Observations / État</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+
+            <div style="margin-top: 60px; display: flex; justify-content: space-between; font-weight: bold; font-size: 12px;">
+              <div style="margin-left: 30px;">Le Magasinier<br><br>........................................</div>
+              <div style="margin-right: 30px;">Le Bénéficiaire<br><br>........................................</div>
+            </div>
+
+            <div style="margin-top: 70px; border-top: 1px solid #000; padding-top: 8px; display: flex; justify-content: space-between; font-size: 8.5px;">
+              <div>Siège - Rabat : Av. Allal Al Fassi, Cité Al Irfane, BP 6598, Rabat / Maroc (+212 5 37 27 17 00)</div>
+              <div>Annexe - Dakhla : 21, rue Al Walaa, Dakhla</div>
+              <div>www.ismac.ma | info@ismac.ma</div>
+            </div>
+          </div>
+        `;
+      }
+
+      printWin.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head><title>Impression Décharge ISMAC</title></head>
+        <body style="margin: 0; padding: 0;">${docHtml}<script>window.onload = function() { window.print(); }<\/script></body>
+        </html>
+      `);
+      printWin.document.close();
+    }
+  </script>
+</body>
+</html>

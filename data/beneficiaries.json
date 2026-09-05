@@ -1,0 +1,37 @@
+[
+  {
+    "id": "BEN-01",
+    "name": "ABDESSAMAD MOUTEI",
+    "role": "Étudiant",
+    "department": "Filière Image / Réalisation",
+    "cin": "A123456"
+  },
+  {
+    "id": "BEN-02",
+    "name": "MOHAMED SAID",
+    "role": "Personnel Administratif",
+    "department": "Service Informatique & Réseau",
+    "cin": "B654321"
+  },
+  {
+    "id": "BEN-03",
+    "name": "YASMINE SAYAGH",
+    "role": "Intervenante / Réalisatrice",
+    "department": "CCM (Centre Cinématographique Marocain)",
+    "cin": "C987654"
+  },
+  {
+    "id": "BEN-04",
+    "name": "AMINE TAZI",
+    "role": "Enseignant",
+    "department": "Département Son & Post-production",
+    "cin": "D112233"
+  },
+  {
+    "id": "BEN-05",
+    "name": "FATIMA-ZAHRA EL ALAMI",
+    "role": "Étudiante",
+    "department": "Filière Montage & Effets Spéciaux",
+    "cin": "E445566"
+  }
+]

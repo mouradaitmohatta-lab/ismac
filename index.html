@@ -237,18 +237,18 @@
           <div id="basket-container" class="p-3 overflow-y-auto space-y-2 flex-1 min-h-[160px] max-h-[330px] divide-y divide-slate-100"></div>
 
           <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
-            <!-- BUTTON 1: IMPRIMER DIRECT -->
-            <button onclick="printExactDocument()" class="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition card-hover">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-              <span>Imprimer le Document Conforme</span>
+            <!-- PRIMARY ACTION: DOWNLOAD REAL WORD DOC -->
+            <button onclick="downloadWordDocument()" class="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition card-hover">
+              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              <span>Télécharger le Fichier Word (.doc)</span>
             </button>
 
-            <!-- BUTTON 2: TÉLÉCHARGER WORD DOC -->
-            <button onclick="downloadWordDocument()" class="w-full py-2.5 px-4 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition">
-              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-              <span>Télécharger Fichier Word (.doc)</span>
+            <!-- SECONDARY ACTION: DIRECT A4 PRINT -->
+            <button onclick="printExactDocument()" class="w-full py-2.5 px-4 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition">
+              <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+              <span>Aperçu Rapide & Impression A4</span>
             </button>
-            <p class="text-[10px] text-slate-400 text-center">Conforme au modèle officiel de l'ISMAC</p>
+            <p class="text-[10px] text-slate-400 text-center">Fichier Word conforme aux modèles ISMAC</p>
           </div>
         </div>
       </div>
@@ -1116,7 +1116,7 @@
                   <button onclick="changeQty('${it.id}', 1)" class="w-5 h-5 rounded bg-indigo-600 font-bold text-xs text-white shadow-sm">+</button>
                 </div>
               ` : `
-                <button onclick="changeQty('${it.id}', 1)" class="w-full py-1.5 rounded-lg bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold transition">
+                <button onclick="changeQty('${it.id}', 1)" class="w-full py-1 rounded-lg bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold transition">
                   + Ajouter
                 </button>
               `}
@@ -1229,13 +1229,13 @@
       });
     }
 
-    // HELPER: BUILD EXACT HTML CONTENT
+    // HELPER: BUILD EXACT OFFICIAL HTML FOR WORD EXPORT
     function buildDocumentHtml() {
       const items = Object.values(basket);
       if (items.length === 0) return null;
 
       const footerOfficial = `
-        <div style="margin-top: 50px; border-top: 1.5px solid #000; padding-top: 8px; font-family: Arial, sans-serif; font-size: 8pt; line-height: 1.35;">
+        <div style="margin-top: 50pt; border-top: 1.5pt solid #000; padding-top: 8pt; font-family: Arial, sans-serif; font-size: 8pt; line-height: 1.35;">
           <table style="width: 100%; border: none; border-collapse: collapse;">
             <tr>
               <td style="width: 28%; vertical-align: top; text-align: left; border: none; padding: 0;">
@@ -1256,31 +1256,30 @@
       `;
 
       const orangeBannerPv = `
-        <div style="margin-top: 35px; background-color: #d84315; color: white; padding: 10px 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
-          <table style="width: 100%; border: none; color: white; border-collapse: collapse; font-size: 8.5pt;">
-            <tr>
-              <td style="width: 40%; vertical-align: top; border: none; padding: 0; line-height: 1.35;">
-                <strong style="font-size: 9pt;">Siège - Rabat :</strong><br>
-                Av. Allal Al Fassi, Cité Al Irfane<br>
-                BP 6598 ,Rabat / Maroc<br>
-                +212 (0) 5 37 27 17 00
-              </td>
-              <td style="width: 2%; border-left: 1px solid white; border-right: none; border-top: none; border-bottom: none;"></td>
-              <td style="width: 40%; vertical-align: top; border: none; padding-left: 12px; line-height: 1.35;">
-                <strong style="font-size: 9pt;">Annexe - Dakhla :</strong><br>
-                21, rue Al Walaa, ville de Dakhla<br>
-                (à côté de l'hôtel Al Bashir )<br>
-                +212 (0) 5 28 89 86 24
-              </td>
-              <td style="width: 18%; vertical-align: middle; text-align: right; border: none; padding: 0;">
-                <span style="font-size: 9pt;">✉ info@ismac.ma</span>
-              </td>
-            </tr>
-          </table>
-          <div style="text-align: center; font-size: 8.5pt; margin-top: 6px; letter-spacing: 1px; border-top: 1px solid rgba(255,255,255,0.4); padding-top: 4px;">
-            🌐 www.ismac.ma
-          </div>
-        </div>
+        <table border="0" style="width: 100%; border: none; margin-top: 30pt; background-color: #d84315; color: white; font-family: Arial; font-size: 8.5pt;">
+          <tr>
+            <td style="padding: 10pt; color: white; border: none; width: 45%; vertical-align: top; line-height: 1.35;">
+              <strong style="font-size: 9pt;">Siège - Rabat :</strong><br>
+              Av. Allal Al Fassi, Cité Al Irfane<br>
+              BP 6598 ,Rabat / Maroc<br>
+              +212 (0) 5 37 27 17 00
+            </td>
+            <td style="padding: 10pt; color: white; border: none; width: 40%; vertical-align: top; line-height: 1.35;">
+              <strong style="font-size: 9pt;">Annexe - Dakhla :</strong><br>
+              21, rue Al Walaa, ville de Dakhla<br>
+              (à côté de l'hôtel Al Bashir )<br>
+              +212 (0) 5 28 89 86 24
+            </td>
+            <td style="padding: 10pt; color: white; border: none; width: 15%; vertical-align: middle; text-align: right;">
+              info@ismac.ma
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: center; color: white; padding: 4pt; border: none; font-size: 8.5pt; border-top: 1px solid rgba(255,255,255,0.4);">
+              www.ismac.ma
+            </td>
+          </tr>
+        </table>
       `;
 
       if (currentDoc === 'audiovisuel') {
@@ -1288,21 +1287,21 @@
         const dateV = document.getElementById('std-date').value.trim() || '10/07/2026';
         const rows = items.map(i => `
           <tr>
-            <td style="border: 1px solid #000; padding: 4px 8px; font-size: 11pt;">${i.name}</td>
-            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 11pt;">${i.quantity}</td>
-            <td style="border: 1px solid #000; padding: 4px 8px; font-size: 11pt;"></td>
+            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 11pt;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 11pt;">${i.quantity}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 11pt;"></td>
           </tr>
         `).join('');
 
         return `
-          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; padding: 20px;">
+          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; padding: 15pt;">
             <div style="font-weight: bold; font-size: 14pt; margin-bottom: 22pt;">BON DE DÉCHARGE DE MATÉRIEL AUDIOVISUEL</div>
             <div style="font-weight: bold; font-size: 11pt; margin-bottom: 4pt;">RÉCUPÉRÉ PAR&nbsp; : <span style="font-weight: normal;">${ben.toUpperCase()}</span></div>
             <div style="font-weight: bold; font-size: 11pt; margin-bottom: 20pt;">DATE DE SORTIE : <span style="font-weight: normal;">${dateV}</span></div>
 
-            <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">
+            <table border="1" style="width: 100%; border-collapse: collapse; font-size: 10pt;">
               <thead>
-                <tr>
+                <tr style="background-color: #f2f2f2;">
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 65%; font-weight: bold;">Matériel</th>
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 20%; font-weight: bold;">Observations</th>
@@ -1322,21 +1321,21 @@
         const dateV = document.getElementById('std-date').value.trim() || '05/05/2026';
         const rows = items.map(i => `
           <tr>
-            <td style="border: 1px solid #000; padding: 4px 8px; font-size: 11pt;">${i.name}</td>
-            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 11pt;">${i.quantity}</td>
-            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 11pt;">—--------------</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 11pt;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 11pt;">${i.quantity}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 11pt;">—--------------</td>
           </tr>
         `).join('');
 
         return `
-          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; padding: 20px;">
+          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; padding: 15pt;">
             <div style="font-weight: bold; font-size: 14pt; margin-bottom: 22pt;">BON DE DÉCHARGE DE FOURNITURE INFORMATIQUE</div>
             <div style="font-weight: bold; font-size: 11pt; margin-bottom: 4pt;">RÉCUPÉRÉ PAR&nbsp; : <span style="font-weight: normal;">${ben.toUpperCase()} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
             <div style="font-weight: bold; font-size: 11pt; margin-bottom: 20pt;">DATE DE SORTIE : <span style="font-weight: normal;">${dateV}</span></div>
 
-            <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">
+            <table border="1" style="width: 100%; border-collapse: collapse; font-size: 10pt;">
               <thead>
-                <tr>
+                <tr style="background-color: #f2f2f2;">
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 65%; font-weight: bold;">Matériel</th>
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 20%; font-weight: bold;">Observations</th>
@@ -1361,7 +1360,7 @@
         const desig = document.getElementById('det-desig').value || '';
 
         return `
-          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; line-height: 1.6; padding: 25px 30px;">
+          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; line-height: 1.6; padding: 20pt;">
             <div style="text-align: right; font-size: 11pt; margin-bottom: 25pt;">${villeDate}</div>
             <div style="text-align: center; font-weight: bold; font-size: 16pt; margin-bottom: 30pt;">
               BON DE DÉCHARGE<br>DU MATÉRIEL
@@ -1373,10 +1372,12 @@
             <div style="margin-bottom: 12pt; padding-left: 40pt;"><strong>EN DATE DU&nbsp;:</strong> &nbsp;${enDate}</div>
             <div style="margin-bottom: 12pt; padding-left: 40pt;"><strong>N° DE SERIE &nbsp;:</strong> &nbsp;${numSer} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>VU PAR ISMAC…………………………………………………………………</strong></div>
 
-            <div style="margin-top: 60pt; display: flex; justify-content: space-between; font-weight: bold; font-size: 11pt; padding: 0 40pt;">
-              <div>Vu par ISMAC</div>
-              <div>La personne concernée</div>
-            </div>
+            <table border="0" style="width: 100%; border: none; margin-top: 60pt; font-family: Arial; font-size: 11pt; font-weight: bold;">
+              <tr>
+                <td style="width: 50%; text-align: left; border: none;">Vu par ISMAC</td>
+                <td style="width: 50%; text-align: right; border: none;">La personne concernée</td>
+              </tr>
+            </table>
           </div>
         `;
       } else if (currentDoc === 'pv') {
@@ -1396,7 +1397,7 @@
         `).join('');
 
         return `
-          <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.4; padding: 20px;">
+          <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.4; padding: 15pt;">
             <div style="font-weight: bold; font-size: 13pt; margin-bottom: 12pt;">
               PROCÈS-VERBAL D'AFFECTATION MATÉRIEL &nbsp; N° : ${numPv}
             </div>
@@ -1405,9 +1406,9 @@
             <div style="margin-bottom: 4pt;"><strong>Date d'exécution :</strong> ${dateEx}</div>
             <div style="margin-bottom: 14pt;"><strong>Responsable de la mise en place :</strong> ${resp}</div>
 
-            <table style="width: 100%; border-collapse: collapse; font-size: 9.5pt;">
+            <table border="1" style="width: 100%; border-collapse: collapse; font-size: 9.5pt;">
               <thead>
-                <tr>
+                <tr style="background-color: #f2f2f2;">
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 40%; font-weight: bold;">Désignation du Matériel</th>
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 25%; font-weight: bold;">N° d'Inventaire</th>
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
@@ -1419,11 +1420,13 @@
 
             ${orangeBannerPv}
 
-            <div style="margin-top: 30pt; display: flex; justify-content: space-between; font-weight: bold; font-size: 9.5pt; text-align: center;">
-              <div style="width: 30%;">Le magasinier<br><br>........................................</div>
-              <div style="width: 40%;">Responsable de la mise en place<br><br>........................................</div>
-              <div style="width: 30%;">Administration<br><br></div>
-            </div>
+            <table border="0" style="width: 100%; border: none; margin-top: 30pt; font-family: Arial; font-size: 9.5pt; font-weight: bold; text-align: center;">
+              <tr>
+                <td style="width: 33%; border: none;">Le magasinier<br><br>........................................</td>
+                <td style="width: 34%; border: none;">Responsable de la mise en place<br><br>........................................</td>
+                <td style="width: 33%; border: none;">Administration<br><br></td>
+              </tr>
+            </table>
           </div>
         `;
       } else if (currentDoc === 'sortie') {
@@ -1442,7 +1445,7 @@
         `).join('');
 
         return `
-          <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.4; padding: 20px;">
+          <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.4; padding: 15pt;">
             <div style="font-weight: bold; font-size: 13pt; margin-bottom: 12pt;">
               BON DE SORTIE DE MATÉRIEL &nbsp; N° : ${numS}
             </div>
@@ -1450,9 +1453,9 @@
             <div style="margin-bottom: 4pt;"><strong>Motif de la sortie :</strong> ${motif}</div>
             <div style="margin-bottom: 14pt;"><strong>Date de sortie du magasin :</strong> ${dateS}</div>
 
-            <table style="width: 100%; border-collapse: collapse; font-size: 9.5pt;">
+            <table border="1" style="width: 100%; border-collapse: collapse; font-size: 9.5pt;">
               <thead>
-                <tr>
+                <tr style="background-color: #f2f2f2;">
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 45%; font-weight: bold;">Désignation précise du matériel</th>
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 25%; font-weight: bold;">N° d'Inventaire</th>
                   <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
@@ -1462,17 +1465,70 @@
               <tbody>${rows}</tbody>
             </table>
 
-            <div style="margin-top: 50pt; display: flex; justify-content: space-between; font-weight: bold; font-size: 10.5pt; padding: 0 30pt;">
-              <div>Le Magasinier<br><br>........................................</div>
-              <div>Le Bénéficiaire<br><br>........................................</div>
-            </div>
+            <table border="0" style="width: 100%; border: none; margin-top: 45pt; font-family: Arial; font-size: 10.5pt; font-weight: bold;">
+              <tr>
+                <td style="width: 50%; text-align: left; border: none; padding-left: 15pt;">Le Magasinier<br><br>........................................</td>
+                <td style="width: 50%; text-align: right; border: none; padding-right: 15pt;">Le Bénéficiaire<br><br>........................................</td>
+              </tr>
+            </table>
           </div>
         `;
       }
       return null;
     }
 
-    // ACTION 1: PRINT DIRECT
+    // PRIMARY ACTION: DOWNLOAD REAL MICROSOFT WORD (.DOC)
+    function downloadWordDocument() {
+      const docHtml = buildDocumentHtml();
+      if (!docHtml) {
+        alert("Veuillez sélectionner au moins un article.");
+        return;
+      }
+      
+      const wordHeader = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>Document ISMAC</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page Section1 {
+              size: 595.3pt 841.9pt;
+              margin: 40pt 50pt 40pt 50pt;
+              mso-header-margin: 35.4pt;
+              mso-footer-margin: 35.4pt;
+              mso-paper-source: 0;
+            }
+            div.Section1 { page: Section1; }
+            body { font-family: Arial, sans-serif; }
+          </style>
+        </head>
+        <body>
+          <div class="Section1">
+      `;
+      const wordFooter = `</div></body></html>`;
+      const fullWordContent = wordHeader + docHtml + wordFooter;
+
+      const blob = new Blob(['\ufeff' + fullWordContent], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ISMAC_${currentDoc.toUpperCase()}_${Date.now()}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // SECONDARY ACTION: DIRECT A4 PRINT
     function printExactDocument() {
       const docHtml = buildDocumentHtml();
       if (!docHtml) {
@@ -1501,28 +1557,6 @@
         </html>
       `);
       printWin.document.close();
-    }
-
-    // ACTION 2: DOWNLOAD REAL WORD FILE (.DOC)
-    function downloadWordDocument() {
-      const docHtml = buildDocumentHtml();
-      if (!docHtml) {
-        alert("Veuillez sélectionner au moins un article.");
-        return;
-      }
-      const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Document ISMAC</title></head><body>";
-      const footer = "</body></html>";
-      const sourceHTML = header + docHtml + footer;
-
-      const blob = new Blob(['\ufeff' + sourceHTML], { type: 'application/msword' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `ISMAC_${currentDoc.toUpperCase()}_${Date.now()}.doc`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
     }
   </script>
 </body>

@@ -12,13 +12,13 @@
     .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.12); }
     @media print {
       @page { size: A4 portrait; margin: 10mm 15mm 10mm 15mm; }
-      body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background: white !important; }
     }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col antialiased">
 
-  <!-- TOP BAR -->
+  <!-- HEADER -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -202,7 +202,7 @@
           <div class="flex flex-col sm:flex-row items-center gap-3">
             <div class="relative flex-1 w-full">
               <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-              <input type="text" id="search-box" oninput="renderCatalog()" placeholder="Recherche rapide parmi les 200+ articles (par nom, marque, référence ou n° de série)..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500">
+              <input type="text" id="search-box" oninput="renderCatalog()" placeholder="Recherche rapide parmi les articles (nom, marque, référence, n° de série)..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500">
             </div>
 
             <!-- View Toggle: Cards vs Compact List -->
@@ -218,7 +218,7 @@
 
           <!-- DYNAMIC SUB-CATEGORIES BAR -->
           <div id="subcat-bar" class="flex flex-wrap gap-1.5 pt-1 border-t border-slate-100">
-            <!-- Rendered dynamically based on active document -->
+            <!-- Rendered dynamically -->
           </div>
         </div>
 
@@ -237,9 +237,16 @@
           <div id="basket-container" class="p-3 overflow-y-auto space-y-2 flex-1 min-h-[160px] max-h-[330px] divide-y divide-slate-100"></div>
 
           <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
+            <!-- BUTTON 1: IMPRIMER DIRECT -->
             <button onclick="printExactDocument()" class="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition card-hover">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
               <span>Imprimer le Document Conforme</span>
+            </button>
+
+            <!-- BUTTON 2: TÉLÉCHARGER WORD DOC -->
+            <button onclick="downloadWordDocument()" class="w-full py-2.5 px-4 rounded-xl bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 transition">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              <span>Télécharger Fichier Word (.doc)</span>
             </button>
             <p class="text-[10px] text-slate-400 text-center">Conforme au modèle officiel de l'ISMAC</p>
           </div>
@@ -942,10 +949,9 @@
 ;
     let currentDoc = 'audiovisuel';
     let currentSubCat = 'ALL';
-    let viewMode = 'grid'; // 'grid' or 'table'
+    let viewMode = 'grid';
     let basket = {};
 
-    // Categories mapping per document
     const subCategories = {
       audiovisuel: ["ALL", "Image & Caméras", "Optiques & Objectifs", "Son & Micros", "Machinerie & Supports", "Éclairage & Lumière", "Câblage", "Énergie & Batteries", "Cartes mémoires & Lecteurs"],
       informatique: ["ALL", "Disques externes & SSD", "Clés USB", "Câbles & Adaptateurs", "Papiers & Blocs", "Stylos & Écriture", "Toner & Encre", "Classement & Accessoires"],
@@ -1081,7 +1087,7 @@
         return;
       }
 
-      // 1. GRID CARDS VIEW
+      // 1. GRID VIEW
       if (viewMode === 'grid') {
         const grid = document.createElement('div');
         grid.className = "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5";
@@ -1120,7 +1126,7 @@
         });
         container.appendChild(grid);
       } 
-      // 2. COMPACT TABLE VIEW (Optimized for 200+ items selection)
+      // 2. COMPACT LIST VIEW
       else {
         const tableCard = document.createElement('div');
         tableCard.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm";
@@ -1223,17 +1229,11 @@
       });
     }
 
-    // PRINT EXACT ADMINISTRATIVE TEMPLATES (NO BROWSER HEADERS/FOOTERS)
-    function printExactDocument() {
+    // HELPER: BUILD EXACT HTML CONTENT
+    function buildDocumentHtml() {
       const items = Object.values(basket);
-      if (items.length === 0) {
-        alert("Veuillez sélectionner au moins un article.");
-        return;
-      }
+      if (items.length === 0) return null;
 
-      let content = '';
-
-      // OFFICIAL ISMAC FOOTER (Documents 1, 2, 3)
       const footerOfficial = `
         <div style="margin-top: 50px; border-top: 1.5px solid #000; padding-top: 8px; font-family: Arial, sans-serif; font-size: 8pt; line-height: 1.35;">
           <table style="width: 100%; border: none; border-collapse: collapse;">
@@ -1255,7 +1255,6 @@
         </div>
       `;
 
-      // OFFICIAL ORANGE ISMAC BANNER (Document 4 PV d'Affectation)
       const orangeBannerPv = `
         <div style="margin-top: 35px; background-color: #d84315; color: white; padding: 10px 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
           <table style="width: 100%; border: none; color: white; border-collapse: collapse; font-size: 8.5pt;">
@@ -1295,7 +1294,7 @@
           </tr>
         `).join('');
 
-        content = `
+        return `
           <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; padding: 20px;">
             <div style="font-weight: bold; font-size: 14pt; margin-bottom: 22pt;">BON DE DÉCHARGE DE MATÉRIEL AUDIOVISUEL</div>
             <div style="font-weight: bold; font-size: 11pt; margin-bottom: 4pt;">RÉCUPÉRÉ PAR&nbsp; : <span style="font-weight: normal;">${ben.toUpperCase()}</span></div>
@@ -1318,7 +1317,6 @@
             ${footerOfficial}
           </div>
         `;
-
       } else if (currentDoc === 'informatique') {
         const ben = document.getElementById('std-ben').value.trim() || 'MOHAMED SAID';
         const dateV = document.getElementById('std-date').value.trim() || '05/05/2026';
@@ -1330,7 +1328,7 @@
           </tr>
         `).join('');
 
-        content = `
+        return `
           <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; padding: 20px;">
             <div style="font-weight: bold; font-size: 14pt; margin-bottom: 22pt;">BON DE DÉCHARGE DE FOURNITURE INFORMATIQUE</div>
             <div style="font-weight: bold; font-size: 11pt; margin-bottom: 4pt;">RÉCUPÉRÉ PAR&nbsp; : <span style="font-weight: normal;">${ben.toUpperCase()} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
@@ -1353,17 +1351,16 @@
             ${footerOfficial}
           </div>
         `;
-
       } else if (currentDoc === 'detaillee') {
         const villeDate = document.getElementById('det-ville-date').value || 'Rabat, le 09/02/2026';
         const civ = document.getElementById('det-civ').value || 'Mme';
         const ben = document.getElementById('det-ben').value || 'YASMINE SAYAGH';
         const pour = document.getElementById('det-pour').value || 'CCM';
         const enDate = document.getElementById('det-en-date').value || '09 FÉVRIER 2026';
-        const numSer = document.getElementById('det-num-serie').value || 'CANON 5D M III ( 283022003512 ) + OBJECTIF 50mm (1078811)';
-        const desig = document.getElementById('det-desig').value || 'CANON 5D M III + OBJECTIF CANON 50mm + 2 BATTERIES + CHARGEUR + SAC + CARTE SD 64GB + LECTEUR CARTE MÉMOIRE';
+        const numSer = document.getElementById('det-num-serie').value || '';
+        const desig = document.getElementById('det-desig').value || '';
 
-        content = `
+        return `
           <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; line-height: 1.6; padding: 25px 30px;">
             <div style="text-align: right; font-size: 11pt; margin-bottom: 25pt;">${villeDate}</div>
             <div style="text-align: center; font-weight: bold; font-size: 16pt; margin-bottom: 30pt;">
@@ -1382,7 +1379,6 @@
             </div>
           </div>
         `;
-
       } else if (currentDoc === 'pv') {
         const numPv = document.getElementById('pv-num').value || '01 / 2026';
         const obj = document.getElementById('pv-obj').value || 'Installation et affectation des équipements audiovisuel';
@@ -1399,7 +1395,7 @@
           </tr>
         `).join('');
 
-        content = `
+        return `
           <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.4; padding: 20px;">
             <div style="font-weight: bold; font-size: 13pt; margin-bottom: 12pt;">
               PROCÈS-VERBAL D'AFFECTATION MATÉRIEL &nbsp; N° : ${numPv}
@@ -1430,7 +1426,6 @@
             </div>
           </div>
         `;
-
       } else if (currentDoc === 'sortie') {
         const numS = document.getElementById('sortie-num').value || '01 / 2026';
         const ben = document.getElementById('sortie-ben').value || '.......................................................................................';
@@ -1446,7 +1441,7 @@
           </tr>
         `).join('');
 
-        content = `
+        return `
           <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.4; padding: 20px;">
             <div style="font-weight: bold; font-size: 13pt; margin-bottom: 12pt;">
               BON DE SORTIE DE MATÉRIEL &nbsp; N° : ${numS}
@@ -1474,7 +1469,16 @@
           </div>
         `;
       }
+      return null;
+    }
 
+    // ACTION 1: PRINT DIRECT
+    function printExactDocument() {
+      const docHtml = buildDocumentHtml();
+      if (!docHtml) {
+        alert("Veuillez sélectionner au moins un article.");
+        return;
+      }
       const printWin = window.open('', '_blank');
       printWin.document.write(`
         <!DOCTYPE html>
@@ -1487,7 +1491,7 @@
           </style>
         </head>
         <body>
-          ${content}
+          ${docHtml}
           <script>
             window.onload = function() {
               setTimeout(function() { window.print(); }, 200);
@@ -1497,6 +1501,28 @@
         </html>
       `);
       printWin.document.close();
+    }
+
+    // ACTION 2: DOWNLOAD REAL WORD FILE (.DOC)
+    function downloadWordDocument() {
+      const docHtml = buildDocumentHtml();
+      if (!docHtml) {
+        alert("Veuillez sélectionner au moins un article.");
+        return;
+      }
+      const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Document ISMAC</title></head><body>";
+      const footer = "</body></html>";
+      const sourceHTML = header + docHtml + footer;
+
+      const blob = new Blob(['\ufeff' + sourceHTML], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ISMAC_${currentDoc.toUpperCase()}_${Date.now()}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>

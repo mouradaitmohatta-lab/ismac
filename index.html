@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ISMAC — Gestion Logistique & Décharges</title>
+  <title>ISMAC — Gestion des Décharges & Matériel</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
@@ -11,101 +11,104 @@
     .card-hover { transition: all 0.2s ease; }
     .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.12); }
     @media print {
-      @page { size: A4 portrait; margin: 15mm 20mm 15mm 20mm; }
+      @page { size: A4 portrait; margin: 10mm 15mm 10mm 15mm; }
       body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col antialiased">
 
-  <!-- HEADER -->
+  <!-- TOP BAR -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-sm tracking-wider">
-          ISMAC
+          IS
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="font-bold text-slate-900 text-sm">Institut Supérieur des Métiers de l'Audiovisuel et du Cinéma</span>
-            <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200">Rabat - Maroc</span>
+            <span class="font-bold text-slate-900 text-sm">ISMAC — Institut Supérieur des Métiers de l'Audiovisuel et du Cinéma</span>
+            <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200">Magasin & Stock</span>
           </div>
-          <p class="text-xs text-slate-500">Système de Génération Conforme des Décharges & PV d'Affectation</p>
+          <p class="text-xs text-slate-500">Système de Décharges Officielles & PV d'Affectation</p>
         </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg">Rabat - Cité Al Irfane</span>
       </div>
     </div>
   </header>
 
   <!-- MAIN -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full space-y-6">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex-1 w-full space-y-5">
 
-    <!-- SELECTEUR DES 5 DOCUMENTS EXACTS -->
-    <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+    <!-- 1. SÉLECTEUR DES 5 DOCUMENTS EXACTS -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2">
           <span class="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs">1</span>
-          Sélectionnez le document à générer
+          Modèle de document administratif
         </h2>
         <span class="text-xs text-indigo-600 font-bold" id="doc-active-title">BON DE DÉCHARGE DE MATÉRIEL AUDIOVISUEL</span>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
         <div onclick="selectDoc('audiovisuel')" id="btn-audiovisuel" class="doc-btn border-2 border-indigo-600 bg-indigo-50 rounded-xl p-3 cursor-pointer card-hover transition">
-          <div class="text-xl mb-1">🎥</div>
-          <h4 class="font-bold text-xs text-slate-900">1. Décharge Audiovisuelle</h4>
-          <p class="text-[10px] text-slate-500 mt-0.5">Caméras Z280, Optiques, Micros...</p>
+          <div class="text-lg">🎥</div>
+          <h4 class="font-bold text-xs text-slate-900 mt-1">1. Décharge Audiovisuelle</h4>
+          <p class="text-[10px] text-slate-500 mt-0.5">Caméras, Optiques, Son, Trépieds...</p>
         </div>
 
         <div onclick="selectDoc('informatique')" id="btn-informatique" class="doc-btn border border-slate-200 bg-white rounded-xl p-3 cursor-pointer card-hover transition">
-          <div class="text-xl mb-1">💻</div>
-          <h4 class="font-bold text-xs text-slate-900">2. Décharge Fourniture Info</h4>
+          <div class="text-lg">💻</div>
+          <h4 class="font-bold text-xs text-slate-900 mt-1">2. Décharge Fourniture Info</h4>
           <p class="text-[10px] text-slate-500 mt-0.5">Clés USB, Disques, Papier, Stylos...</p>
         </div>
 
         <div onclick="selectDoc('detaillee')" id="btn-detaillee" class="doc-btn border border-slate-200 bg-white rounded-xl p-3 cursor-pointer card-hover transition">
-          <div class="text-xl mb-1">📋</div>
-          <h4 class="font-bold text-xs text-slate-900">3. Décharge Détaillée</h4>
+          <div class="text-lg">📋</div>
+          <h4 class="font-bold text-xs text-slate-900 mt-1">3. Décharge Détaillée</h4>
           <p class="text-[10px] text-slate-500 mt-0.5">Avec N° de Série & Visa ISMAC</p>
         </div>
 
         <div onclick="selectDoc('pv')" id="btn-pv" class="doc-btn border border-slate-200 bg-white rounded-xl p-3 cursor-pointer card-hover transition">
-          <div class="text-xl mb-1">📑</div>
-          <h4 class="font-bold text-xs text-slate-900">4. PV d'Affectation</h4>
+          <div class="text-lg">📑</div>
+          <h4 class="font-bold text-xs text-slate-900 mt-1">4. PV d'Affectation</h4>
           <p class="text-[10px] text-slate-500 mt-0.5">Installation & Signatures à 3</p>
         </div>
 
         <div onclick="selectDoc('sortie')" id="btn-sortie" class="doc-btn border border-slate-200 bg-white rounded-xl p-3 cursor-pointer card-hover transition">
-          <div class="text-xl mb-1">📦</div>
-          <h4 class="font-bold text-xs text-slate-900">5. Bon de Sortie</h4>
+          <div class="text-lg">📦</div>
+          <h4 class="font-bold text-xs text-slate-900 mt-1">5. Bon de Sortie</h4>
           <p class="text-[10px] text-slate-500 mt-0.5">Sortie magasin & Bénéficiaire</p>
         </div>
       </div>
     </section>
 
-    <!-- FORMULAIRE ADAPTÉ PAR DOCUMENT -->
-    <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-      <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+    <!-- 2. FORMULAIRE 100% ADAPTÉ À LA DÉCHARGE -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+      <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2.5">
         <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-2">
           <span class="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs">2</span>
-          Renseignez les données du document
+          Données administratives du mouvement
         </h2>
-        <span class="text-xs text-slate-400">Champs conformes au document sélectionné</span>
+        <span class="text-xs text-slate-400">Champs conformes au document</span>
       </div>
 
-      <!-- FORM 1 & 2: DECHARGE STANDARD -->
+      <!-- FORMULAIRE 1 & 2: DÉCHARGE AUDIOVISUELLE & FOURNITURE INFORMATIQUE -->
       <div id="form-std" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">RÉCUPÉRÉ PAR :</label>
-          <input type="text" id="std-ben" list="ben-list" placeholder="ex: ABDESSAMAD MOUTEI" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
+          <input type="text" id="std-ben" list="ben-list" placeholder="ex: ABDESSAMAD MOUTEI" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:bg-white focus:ring-2 focus:ring-indigo-500">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">DATE DE SORTIE :</label>
-          <input type="text" id="std-date" placeholder="JJ/MM/AAAA" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
+          <input type="text" id="std-date" placeholder="JJ/MM/AAAA" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold focus:bg-white focus:ring-2 focus:ring-indigo-500">
         </div>
       </div>
 
-      <!-- FORM 3: DETAILLEE -->
-      <div id="form-det" class="hidden space-y-4">
+      <!-- FORMULAIRE 3: DÉCHARGE DÉTAILLÉE -->
+      <div id="form-det" class="hidden space-y-3">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">VILLE & DATE (En-tête droite) :</label>
@@ -137,12 +140,12 @@
           </div>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">DÉSIGNATION :</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">DÉSIGNATION (Générée automatiquement ou modifiable) :</label>
           <input type="text" id="det-desig" placeholder="CANON 5D M III + OBJECTIF CANON 50mm + 2 BATTERIES + CHARGEUR + SAC + CARTE SD 64GB" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
         </div>
       </div>
 
-      <!-- FORM 4: PV AFFECTATION -->
+      <!-- FORMULAIRE 4: PV D'AFFECTATION -->
       <div id="form-pv" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">N° DU PV :</label>
@@ -154,7 +157,7 @@
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">LIEU D'INSTALLATION :</label>
-          <input type="text" id="pv-lieu" placeholder="Plateau 1 / Régie" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
+          <input type="text" id="pv-lieu" placeholder="ex: Plateau 1 / Régie Son" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">DATE D'EXÉCUTION :</label>
@@ -166,7 +169,7 @@
         </div>
       </div>
 
-      <!-- FORM 5: BON DE SORTIE -->
+      <!-- FORMULAIRE 5: BON DE SORTIE -->
       <div id="form-sortie" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">N° DU BON :</label>
@@ -189,16 +192,41 @@
       <datalist id="ben-list"></datalist>
     </section>
 
-    <!-- CATALOGUE & PANIER -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <div class="lg:col-span-8 space-y-4">
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center justify-between gap-4">
-          <input type="text" id="search-box" oninput="renderCatalog()" placeholder="Rechercher une référence, caméra, matériel..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:bg-white focus:ring-2 focus:ring-indigo-500">
+    <!-- 3. RECHERCHE ULTRA-RAPIDE, SOUS-CATÉGORIES & CATALOGUE -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+      <div class="lg:col-span-8 space-y-3">
+        
+        <!-- SEARCH & FILTER BAR -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
+          <!-- Live Search + Mode Toggle -->
+          <div class="flex flex-col sm:flex-row items-center gap-3">
+            <div class="relative flex-1 w-full">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              <input type="text" id="search-box" oninput="renderCatalog()" placeholder="Recherche rapide parmi les 200+ articles (par nom, marque, référence ou n° de série)..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- View Toggle: Cards vs Compact List -->
+            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl shrink-0">
+              <button onclick="setViewMode('grid')" id="view-mode-grid" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-900 flex items-center gap-1">
+                <span>🖼️ Cartes</span>
+              </button>
+              <button onclick="setViewMode('table')" id="view-mode-table" class="px-2.5 py-1 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-900 flex items-center gap-1">
+                <span>📋 Liste Compacte</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- DYNAMIC SUB-CATEGORIES BAR -->
+          <div id="subcat-bar" class="flex flex-wrap gap-1.5 pt-1 border-t border-slate-100">
+            <!-- Rendered dynamically based on active document -->
+          </div>
         </div>
-        <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5"></div>
+
+        <!-- ITEMS CONTAINER -->
+        <div id="catalog-container"></div>
       </div>
 
-      <!-- BASKET -->
+      <!-- BASKET (PANIER) -->
       <div class="lg:col-span-4 sticky top-20">
         <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
           <div class="p-3.5 bg-slate-900 text-white flex items-center justify-between">
@@ -206,14 +234,14 @@
             <span id="basket-badge" class="px-2 py-0.5 bg-indigo-500 text-white rounded-full text-[10px] font-bold">0</span>
           </div>
 
-          <div id="basket-container" class="p-3.5 overflow-y-auto space-y-2 flex-1 min-h-[160px] max-h-[320px] divide-y divide-slate-100"></div>
+          <div id="basket-container" class="p-3 overflow-y-auto space-y-2 flex-1 min-h-[160px] max-h-[330px] divide-y divide-slate-100"></div>
 
           <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-2.5">
             <button onclick="printExactDocument()" class="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 transition card-hover">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
               <span>Imprimer le Document Conforme</span>
             </button>
-            <p class="text-[10px] text-slate-400 text-center">Impression A4 conforme au modèle original ISMAC</p>
+            <p class="text-[10px] text-slate-400 text-center">Conforme au modèle officiel de l'ISMAC</p>
           </div>
         </div>
       </div>
@@ -224,215 +252,656 @@
   <script>
     const inventory = [
   {
-    "id": "AV-001",
+    "id": "AV-CAM-01",
     "name": "Caméras SONY XDCAM Z280",
     "category": "audiovisuel",
-    "subcategory": "Caméras",
-    "serial_number": "SN-SONY-Z280-4921",
+    "subcategory": "Image & Caméras",
     "inventory_number": "ISMAC-AV-2026-001",
-    "stock": 5,
-    "unit": "Unité",
-    "icon": "camera",
+    "serial_number": "SN-SONY-Z280-4921",
     "image_url": "https://images.unsplash.com/photo-1589872307379-0ffdf9829123?w=400&auto=format&fit=crop&q=80",
-    "description": "Caméra de poing 4K 3CMOS 1/2 pouce avec zoom 17x"
+    "stock": 5
   },
   {
-    "id": "AV-002",
-    "name": "CANON 5D Mark III + Objectif 50mm",
+    "id": "AV-CAM-02",
+    "name": "Caméra SONY FX6 Cinéma Line",
     "category": "audiovisuel",
-    "subcategory": "Caméras",
-    "serial_number": "283022003512 / OBJ: 1078811",
+    "subcategory": "Image & Caméras",
     "inventory_number": "ISMAC-AV-2026-002",
-    "stock": 3,
-    "unit": "Kit",
-    "icon": "camera",
+    "serial_number": "SN-FX6-88412",
     "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&auto=format&fit=crop&q=80",
-    "description": "Boîtier reflex plein format avec objectif Canon EF 50mm f/1.4"
+    "stock": 2
   },
   {
-    "id": "AV-003",
+    "id": "AV-CAM-03",
+    "name": "Caméra SONY FX3 Plein Format",
+    "category": "audiovisuel",
+    "subcategory": "Image & Caméras",
+    "inventory_number": "ISMAC-AV-2026-003",
+    "serial_number": "SN-FX3-10294",
+    "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&auto=format&fit=crop&q=80",
+    "stock": 3
+  },
+  {
+    "id": "AV-CAM-04",
+    "name": "Boîtier CANON 5D Mark III",
+    "category": "audiovisuel",
+    "subcategory": "Image & Caméras",
+    "inventory_number": "ISMAC-AV-2026-004",
+    "serial_number": "283022003512",
+    "image_url": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&auto=format&fit=crop&q=80",
+    "stock": 4
+  },
+  {
+    "id": "AV-CAM-05",
+    "name": "Caméra Blackmagic Pocket Cinema 6K Pro",
+    "category": "audiovisuel",
+    "subcategory": "Image & Caméras",
+    "inventory_number": "ISMAC-AV-2026-005",
+    "serial_number": "SN-BMPCC6K-992",
+    "image_url": "https://images.unsplash.com/photo-1589872307379-0ffdf9829123?w=400&auto=format&fit=crop&q=80",
+    "stock": 2
+  },
+  {
+    "id": "AV-OPT-01",
+    "name": "Objectif CANON EF 50mm f/1.4 USM",
+    "category": "audiovisuel",
+    "subcategory": "Optiques & Objectifs",
+    "inventory_number": "ISMAC-AV-2026-010",
+    "serial_number": "1078811",
+    "image_url": "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?w=400&auto=format&fit=crop&q=80",
+    "stock": 4
+  },
+  {
+    "id": "AV-OPT-02",
+    "name": "Objectif SONY FE 24-70mm f/2.8 GM II",
+    "category": "audiovisuel",
+    "subcategory": "Optiques & Objectifs",
+    "inventory_number": "ISMAC-AV-2026-011",
+    "serial_number": "SN-SEL2470-381",
+    "image_url": "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?w=400&auto=format&fit=crop&q=80",
+    "stock": 3
+  },
+  {
+    "id": "AV-OPT-03",
+    "name": "Objectif SONY FE 70-200mm f/2.8 GM OSS",
+    "category": "audiovisuel",
+    "subcategory": "Optiques & Objectifs",
+    "inventory_number": "ISMAC-AV-2026-012",
+    "serial_number": "SN-SEL70200-991",
+    "image_url": "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?w=400&auto=format&fit=crop&q=80",
+    "stock": 2
+  },
+  {
+    "id": "AV-OPT-04",
+    "name": "Objectif SIGMA 18-35mm f/1.8 DC HSM Art",
+    "category": "audiovisuel",
+    "subcategory": "Optiques & Objectifs",
+    "inventory_number": "ISMAC-AV-2026-013",
+    "serial_number": "SN-SIG1835-442",
+    "image_url": "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?w=400&auto=format&fit=crop&q=80",
+    "stock": 3
+  },
+  {
+    "id": "AV-SON-01",
     "name": "Microphone Sennheiser MKH 416",
     "category": "audiovisuel",
-    "subcategory": "Son",
+    "subcategory": "Son & Micros",
+    "inventory_number": "ISMAC-AV-2026-020",
     "serial_number": "SN-SENN-416-883",
-    "inventory_number": "ISMAC-AV-2026-015",
-    "stock": 8,
-    "unit": "Unité",
-    "icon": "mic",
     "image_url": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=400&auto=format&fit=crop&q=80",
-    "description": "Microphone canon professionnel supercardioïde court"
+    "stock": 8
   },
   {
-    "id": "AV-004",
-    "name": "Trépied vidéo Manfrotto Nitrotech N12",
+    "id": "AV-SON-02",
+    "name": "Kit Micro Cravate HF Sennheiser EW 100 G4",
     "category": "audiovisuel",
-    "subcategory": "Machinerie",
-    "serial_number": "SN-MANF-N12-092",
-    "inventory_number": "ISMAC-AV-2026-030",
-    "stock": 4,
-    "unit": "Unité",
-    "icon": "tripod",
-    "image_url": "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?w=400&auto=format&fit=crop&q=80",
-    "description": "Trépied carbone double branche avec tête fluide piston azote"
+    "subcategory": "Son & Micros",
+    "inventory_number": "ISMAC-AV-2026-021",
+    "serial_number": "SN-EW100-771",
+    "image_url": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=400&auto=format&fit=crop&q=80",
+    "stock": 6
   },
   {
-    "id": "AV-005",
-    "name": "Batterie Sony BP-U60",
+    "id": "AV-SON-03",
+    "name": "Enregistreur Audio ZOOM H6 6 Pistes",
     "category": "audiovisuel",
-    "subcategory": "Énergie",
-    "serial_number": "SN-BPU60-VARIOUS",
-    "inventory_number": "ISMAC-AV-2026-045",
-    "stock": 14,
-    "unit": "Unité",
-    "icon": "battery",
-    "image_url": "https://images.unsplash.com/photo-1619725002198-6a689b72f41d?w=400&auto=format&fit=crop&q=80",
-    "description": "Batterie lithium-ion 56 Wh pour caméras XDCAM"
+    "subcategory": "Son & Micros",
+    "inventory_number": "ISMAC-AV-2026-022",
+    "serial_number": "SN-ZH6-49102",
+    "image_url": "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=400&auto=format&fit=crop&q=80",
+    "stock": 5
   },
   {
-    "id": "AV-006",
-    "name": "Cartes mémoires Sony SXS-1 64GB",
+    "id": "AV-SON-04",
+    "name": "Casque Professionnel SONY MDR-7506",
     "category": "audiovisuel",
-    "subcategory": "Support",
-    "serial_number": "SN-SXS-64GB",
-    "inventory_number": "ISMAC-AV-2026-050",
-    "stock": 12,
-    "unit": "Unité",
-    "icon": "sd-card",
-    "image_url": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400&auto=format&fit=crop&q=80",
-    "description": "Carte mémoire professionnelle SxS haute vitesse 440 Mo/s"
-  },
-  {
-    "id": "AV-007",
-    "name": "Câble Audio XLR Neutrik 5m",
-    "category": "audiovisuel",
-    "subcategory": "Câblage",
+    "subcategory": "Son & Micros",
+    "inventory_number": "ISMAC-AV-2026-023",
     "serial_number": "N/A",
-    "inventory_number": "ISMAC-AV-2026-060",
-    "stock": 25,
-    "unit": "Unité",
-    "icon": "cable",
-    "image_url": "https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&auto=format&fit=crop&q=80",
-    "description": "Câble micro symétrique blindé avec connecteurs Neutrik"
+    "image_url": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&auto=format&fit=crop&q=80",
+    "stock": 10
   },
   {
-    "id": "AV-008",
+    "id": "AV-SON-05",
+    "name": "Perche Microphone Carbone K-Tek 3m",
+    "category": "audiovisuel",
+    "subcategory": "Son & Micros",
+    "inventory_number": "ISMAC-AV-2026-024",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?w=400&auto=format&fit=crop&q=80",
+    "stock": 6
+  },
+  {
+    "id": "AV-SON-06",
+    "name": "Suspension Rycote + Bonnette Anti-vent",
+    "category": "audiovisuel",
+    "subcategory": "Son & Micros",
+    "inventory_number": "ISMAC-AV-2026-025",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=400&auto=format&fit=crop&q=80",
+    "stock": 6
+  },
+  {
+    "id": "AV-MAC-01",
+    "name": "Trépied Manfrotto Nitrotech N12 Carbone",
+    "category": "audiovisuel",
+    "subcategory": "Machinerie & Supports",
+    "inventory_number": "ISMAC-AV-2026-030",
+    "serial_number": "SN-MANF-N12-092",
+    "image_url": "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?w=400&auto=format&fit=crop&q=80",
+    "stock": 4
+  },
+  {
+    "id": "AV-MAC-02",
+    "name": "Trépied de caméra Sachtler Ace M GS",
+    "category": "audiovisuel",
+    "subcategory": "Machinerie & Supports",
+    "inventory_number": "ISMAC-AV-2026-031",
+    "serial_number": "SN-SACHT-ACE-11",
+    "image_url": "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?w=400&auto=format&fit=crop&q=80",
+    "stock": 5
+  },
+  {
+    "id": "AV-MAC-03",
+    "name": "Stabilisateur DJI RS 3 Pro Combo",
+    "category": "audiovisuel",
+    "subcategory": "Machinerie & Supports",
+    "inventory_number": "ISMAC-AV-2026-032",
+    "serial_number": "SN-DJI-RS3P-88",
+    "image_url": "https://images.unsplash.com/photo-1589872307379-0ffdf9829123?w=400&auto=format&fit=crop&q=80",
+    "stock": 2
+  },
+  {
+    "id": "AV-MAC-04",
+    "name": "Moniteur de tournage SmallHD 7 pouces",
+    "category": "audiovisuel",
+    "subcategory": "Machinerie & Supports",
+    "inventory_number": "ISMAC-AV-2026-033",
+    "serial_number": "SN-SMHD-702-09",
+    "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&auto=format&fit=crop&q=80",
+    "stock": 3
+  },
+  {
+    "id": "AV-ECL-01",
+    "name": "Projecteur LED Aputure Light Storm 300d II",
+    "category": "audiovisuel",
+    "subcategory": "Éclairage & Lumière",
+    "inventory_number": "ISMAC-AV-2026-040",
+    "serial_number": "SN-APUT-300D-01",
+    "image_url": "https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?w=400&auto=format&fit=crop&q=80",
+    "stock": 4
+  },
+  {
+    "id": "AV-ECL-02",
     "name": "Projecteur LED Aputure Amaran 200d",
     "category": "audiovisuel",
-    "subcategory": "Éclairage",
+    "subcategory": "Éclairage & Lumière",
+    "inventory_number": "ISMAC-AV-2026-041",
     "serial_number": "SN-APUT-200D-11",
-    "inventory_number": "ISMAC-AV-2026-070",
-    "stock": 6,
-    "unit": "Kit",
-    "icon": "sun",
     "image_url": "https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?w=400&auto=format&fit=crop&q=80",
-    "description": "Éclairage LED continu 200W Daylight avec réflecteur"
+    "stock": 6
   },
   {
-    "id": "INF-001",
-    "name": "Clé USB 64GB SanDisk Ultra",
-    "category": "informatique",
-    "subcategory": "Stockage",
-    "serial_number": "SN-SD-64U",
-    "inventory_number": "ISMAC-INF-2026-001",
-    "stock": 20,
-    "unit": "Unité",
-    "icon": "usb",
-    "image_url": "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?w=400&auto=format&fit=crop&q=80",
-    "description": "Clé USB 3.0 haute vitesse transfert 130 Mo/s"
+    "id": "AV-ECL-03",
+    "name": "Kit 3 Mandarines 800W avec Variateur",
+    "category": "audiovisuel",
+    "subcategory": "Éclairage & Lumière",
+    "inventory_number": "ISMAC-AV-2026-042",
+    "serial_number": "SN-MAND-KIT-02",
+    "image_url": "https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?w=400&auto=format&fit=crop&q=80",
+    "stock": 3
   },
   {
-    "id": "INF-002",
-    "name": "Disque Dur Externe 2TB LaCie Rugged",
-    "category": "informatique",
-    "subcategory": "Stockage",
-    "serial_number": "SN-LACIE-2TB-09",
-    "inventory_number": "ISMAC-INF-2026-005",
-    "stock": 7,
-    "unit": "Unité",
-    "icon": "hard-drive",
-    "image_url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&auto=format&fit=crop&q=80",
-    "description": "Disque dur tout-terrain résistant aux chocs USB-C"
-  },
-  {
-    "id": "INF-003",
-    "name": "Câble HDMI 2.1 4K 60Hz 3m",
-    "category": "informatique",
-    "subcategory": "Câblage",
+    "id": "AV-ECL-04",
+    "name": "Pied C-Stand Acier Avenger avec Bras",
+    "category": "audiovisuel",
+    "subcategory": "Éclairage & Lumière",
+    "inventory_number": "ISMAC-AV-2026-043",
     "serial_number": "N/A",
-    "inventory_number": "ISMAC-INF-2026-012",
-    "stock": 15,
-    "unit": "Unité",
-    "icon": "monitor",
-    "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&auto=format&fit=crop&q=80",
-    "description": "Câble haute résolution blindé pour régies et écrans"
+    "image_url": "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?w=400&auto=format&fit=crop&q=80",
+    "stock": 8
   },
   {
-    "id": "INF-004",
+    "id": "AV-ECL-05",
+    "name": "Réflecteur Pliable 5 en 1 (110cm)",
+    "category": "audiovisuel",
+    "subcategory": "Éclairage & Lumière",
+    "inventory_number": "ISMAC-AV-2026-044",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?w=400&auto=format&fit=crop&q=80",
+    "stock": 6
+  },
+  {
+    "id": "AV-CAB-01",
+    "name": "Cable XLR Neutrik Blindé 5m",
+    "category": "audiovisuel",
+    "subcategory": "Câblage",
+    "inventory_number": "ISMAC-AV-2026-050",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&auto=format&fit=crop&q=80",
+    "stock": 25
+  },
+  {
+    "id": "AV-CAB-02",
+    "name": "Cable XLR Neutrik Blindé 10m",
+    "category": "audiovisuel",
+    "subcategory": "Câblage",
+    "inventory_number": "ISMAC-AV-2026-051",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&auto=format&fit=crop&q=80",
+    "stock": 18
+  },
+  {
+    "id": "AV-CAB-03",
+    "name": "Câble Vidéo BNC / SDI 12G 10m",
+    "category": "audiovisuel",
+    "subcategory": "Câblage",
+    "inventory_number": "ISMAC-AV-2026-052",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&auto=format&fit=crop&q=80",
+    "stock": 15
+  },
+  {
+    "id": "AV-CAB-04",
+    "name": "Touret Rallonge Électrique 25m",
+    "category": "audiovisuel",
+    "subcategory": "Câblage",
+    "inventory_number": "ISMAC-AV-2026-053",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&auto=format&fit=crop&q=80",
+    "stock": 8
+  },
+  {
+    "id": "AV-BAT-01",
+    "name": "Batterie BP-U60 Sony Originale",
+    "category": "audiovisuel",
+    "subcategory": "Énergie & Batteries",
+    "inventory_number": "ISMAC-AV-2026-060",
+    "serial_number": "SN-BPU60-VAR",
+    "image_url": "https://images.unsplash.com/photo-1619725002198-6a689b72f41d?w=400&auto=format&fit=crop&q=80",
+    "stock": 14
+  },
+  {
+    "id": "AV-BAT-02",
+    "name": "Batterie BP-U30 Sony Originale",
+    "category": "audiovisuel",
+    "subcategory": "Énergie & Batteries",
+    "inventory_number": "ISMAC-AV-2026-061",
+    "serial_number": "SN-BPU30-VAR",
+    "image_url": "https://images.unsplash.com/photo-1619725002198-6a689b72f41d?w=400&auto=format&fit=crop&q=80",
+    "stock": 8
+  },
+  {
+    "id": "AV-BAT-03",
+    "name": "Batterie V-Mount 98Wh Micro",
+    "category": "audiovisuel",
+    "subcategory": "Énergie & Batteries",
+    "inventory_number": "ISMAC-AV-2026-062",
+    "serial_number": "SN-VM98-04",
+    "image_url": "https://images.unsplash.com/photo-1619725002198-6a689b72f41d?w=400&auto=format&fit=crop&q=80",
+    "stock": 6
+  },
+  {
+    "id": "AV-BAT-04",
+    "name": "Chargeur batterie Sony double",
+    "category": "audiovisuel",
+    "subcategory": "Énergie & Batteries",
+    "inventory_number": "ISMAC-AV-2026-063",
+    "serial_number": "SN-CHG-BCU2",
+    "image_url": "https://images.unsplash.com/photo-1619725002198-6a689b72f41d?w=400&auto=format&fit=crop&q=80",
+    "stock": 4
+  },
+  {
+    "id": "AV-BAT-05",
+    "name": "Chargeur batterie Canon LP-E6N",
+    "category": "audiovisuel",
+    "subcategory": "Énergie & Batteries",
+    "inventory_number": "ISMAC-AV-2026-064",
+    "serial_number": "SN-CHG-LPE6",
+    "image_url": "https://images.unsplash.com/photo-1619725002198-6a689b72f41d?w=400&auto=format&fit=crop&q=80",
+    "stock": 5
+  },
+  {
+    "id": "AV-MED-01",
+    "name": "Cartes mémoires SXS-1 64GB Sony",
+    "category": "audiovisuel",
+    "subcategory": "Cartes mémoires & Lecteurs",
+    "inventory_number": "ISMAC-AV-2026-070",
+    "serial_number": "SN-SXS-64",
+    "image_url": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400&auto=format&fit=crop&q=80",
+    "stock": 12
+  },
+  {
+    "id": "AV-MED-02",
+    "name": "Carte SD 64GB SanDisk Extreme Pro",
+    "category": "audiovisuel",
+    "subcategory": "Cartes mémoires & Lecteurs",
+    "inventory_number": "ISMAC-AV-2026-071",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400&auto=format&fit=crop&q=80",
+    "stock": 20
+  },
+  {
+    "id": "AV-MED-03",
+    "name": "Carte SDXC 128GB V90 300Mo/s",
+    "category": "audiovisuel",
+    "subcategory": "Cartes mémoires & Lecteurs",
+    "inventory_number": "ISMAC-AV-2026-072",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400&auto=format&fit=crop&q=80",
+    "stock": 10
+  },
+  {
+    "id": "AV-MED-04",
+    "name": "Lecteur carte mémoire SxS / SD USB-C",
+    "category": "audiovisuel",
+    "subcategory": "Cartes mémoires & Lecteurs",
+    "inventory_number": "ISMAC-AV-2026-073",
+    "serial_number": "SN-RDR-SXS",
+    "image_url": "https://images.unsplash.com/photo-1588508065123-287b28e013da?w=400&auto=format&fit=crop&q=80",
+    "stock": 6
+  },
+  {
+    "id": "AV-MED-05",
+    "name": "Sac de transport rembourré pour caméra",
+    "category": "audiovisuel",
+    "subcategory": "Machinerie & Supports",
+    "inventory_number": "ISMAC-AV-2026-074",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?w=400&auto=format&fit=crop&q=80",
+    "stock": 8
+  },
+  {
+    "id": "INF-DSK-01",
+    "name": "Disque Dur Externe 2TB LaCie Rugged USB-C",
+    "category": "informatique",
+    "subcategory": "Disques externes & SSD",
+    "inventory_number": "ISMAC-INF-2026-001",
+    "serial_number": "SN-LACIE-2TB-01",
+    "image_url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&auto=format&fit=crop&q=80",
+    "stock": 8
+  },
+  {
+    "id": "INF-DSK-02",
+    "name": "Disque Dur Externe 4TB LaCie Rugged",
+    "category": "informatique",
+    "subcategory": "Disques externes & SSD",
+    "inventory_number": "ISMAC-INF-2026-002",
+    "serial_number": "SN-LACIE-4TB-05",
+    "image_url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&auto=format&fit=crop&q=80",
+    "stock": 4
+  },
+  {
+    "id": "INF-DSK-03",
+    "name": "Disque SSD Portable Samsung T7 1TB",
+    "category": "informatique",
+    "subcategory": "Disques externes & SSD",
+    "inventory_number": "ISMAC-INF-2026-003",
+    "serial_number": "SN-T7-1TB-99",
+    "image_url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&auto=format&fit=crop&q=80",
+    "stock": 6
+  },
+  {
+    "id": "INF-DSK-04",
+    "name": "Disque SSD Portable SanDisk Extreme 2TB",
+    "category": "informatique",
+    "subcategory": "Disques externes & SSD",
+    "inventory_number": "ISMAC-INF-2026-004",
+    "serial_number": "SN-SNDSK-2TB-12",
+    "image_url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&auto=format&fit=crop&q=80",
+    "stock": 5
+  },
+  {
+    "id": "INF-USB-01",
+    "name": "Clé USB 64 Sandisk Ultra USB 3.0",
+    "category": "informatique",
+    "subcategory": "Clés USB",
+    "inventory_number": "ISMAC-INF-2026-010",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?w=400&auto=format&fit=crop&q=80",
+    "stock": 25
+  },
+  {
+    "id": "INF-USB-02",
+    "name": "Clé USB 128GB Kingston DataTraveler",
+    "category": "informatique",
+    "subcategory": "Clés USB",
+    "inventory_number": "ISMAC-INF-2026-011",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?w=400&auto=format&fit=crop&q=80",
+    "stock": 18
+  },
+  {
+    "id": "INF-USB-03",
+    "name": "Clé USB 32GB SanDisk Cruzer Blade",
+    "category": "informatique",
+    "subcategory": "Clés USB",
+    "inventory_number": "ISMAC-INF-2026-012",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?w=400&auto=format&fit=crop&q=80",
+    "stock": 30
+  },
+  {
+    "id": "INF-CAB-01",
+    "name": "Câble HDMI 4K 60Hz 3m Haute Vitesse",
+    "category": "informatique",
+    "subcategory": "Câbles & Adaptateurs",
+    "inventory_number": "ISMAC-INF-2026-020",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&auto=format&fit=crop&q=80",
+    "stock": 20
+  },
+  {
+    "id": "INF-CAB-02",
     "name": "Adaptateur Multiport USB-C vers HDMI / USB",
     "category": "informatique",
-    "subcategory": "Accessoires",
+    "subcategory": "Câbles & Adaptateurs",
+    "inventory_number": "ISMAC-INF-2026-021",
     "serial_number": "N/A",
-    "inventory_number": "ISMAC-INF-2026-018",
-    "stock": 10,
-    "unit": "Unité",
-    "icon": "cpu",
     "image_url": "https://images.unsplash.com/photo-1588508065123-287b28e013da?w=400&auto=format&fit=crop&q=80",
-    "description": "Hub adaptateur aluminium pour stations de montage"
+    "stock": 12
   },
   {
-    "id": "BUR-001",
-    "name": "Ramette de Papier A4 80g Double A",
-    "category": "bureau",
-    "subcategory": "Papeterie",
+    "id": "INF-CAB-03",
+    "name": "Câble Réseau RJ45 Cat6 Blindé 10m",
+    "category": "informatique",
+    "subcategory": "Câbles & Adaptateurs",
+    "inventory_number": "ISMAC-INF-2026-022",
     "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&auto=format&fit=crop&q=80",
+    "stock": 15
+  },
+  {
+    "id": "BUR-PAP-01",
+    "name": "Ramette de Papier A4 80g Double A (500 f)",
+    "category": "informatique",
+    "subcategory": "Papiers & Blocs",
     "inventory_number": "ISMAC-BUR-2026-001",
-    "stock": 50,
-    "unit": "Ramette (500 f)",
-    "icon": "file-text",
+    "serial_number": "N/A",
     "image_url": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&auto=format&fit=crop&q=80",
-    "description": "Papier blanc supérieur pour impression administrative"
+    "stock": 60
   },
   {
-    "id": "BUR-002",
+    "id": "BUR-PAP-02",
+    "name": "Ramette de Papier A3 80g Navigator",
+    "category": "informatique",
+    "subcategory": "Papiers & Blocs",
+    "inventory_number": "ISMAC-BUR-2026-002",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&auto=format&fit=crop&q=80",
+    "stock": 20
+  },
+  {
+    "id": "BUR-PAP-03",
+    "name": "Bloc-notes A4 quadrillé spirale",
+    "category": "informatique",
+    "subcategory": "Papiers & Blocs",
+    "inventory_number": "ISMAC-BUR-2026-003",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&auto=format&fit=crop&q=80",
+    "stock": 40
+  },
+  {
+    "id": "BUR-PAP-04",
+    "name": "Blocs Post-it Notes Repositionnables 76x76",
+    "category": "informatique",
+    "subcategory": "Papiers & Blocs",
+    "inventory_number": "ISMAC-BUR-2026-004",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&auto=format&fit=crop&q=80",
+    "stock": 50
+  },
+  {
+    "id": "BUR-STY-01",
     "name": "Boîte de 50 Stylos à bille BIC Cristal Bleu",
-    "category": "bureau",
-    "subcategory": "Écriture",
-    "serial_number": "N/A",
-    "inventory_number": "ISMAC-BUR-2026-005",
-    "stock": 18,
-    "unit": "Boîte",
-    "icon": "pen-tool",
-    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
-    "description": "Stylos à pointe moyenne pour administration et examens"
-  },
-  {
-    "id": "BUR-003",
-    "name": "Cartouche d'encre HP LaserJet Noir Originale",
-    "category": "bureau",
-    "subcategory": "Consommables",
-    "serial_number": "SN-TONER-HP-85A",
+    "category": "informatique",
+    "subcategory": "Stylos & Écriture",
     "inventory_number": "ISMAC-BUR-2026-010",
-    "stock": 8,
-    "unit": "Unité",
-    "icon": "printer",
-    "image_url": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&auto=format&fit=crop&q=80",
-    "description": "Toner noir haute capacité pour imprimantes administratives"
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
+    "stock": 20
   },
   {
-    "id": "BUR-004",
-    "name": "Classeurs à levier dos 80mm A4",
-    "category": "bureau",
-    "subcategory": "Classement",
+    "id": "BUR-STY-02",
+    "name": "Boîte de 50 Stylos à bille BIC Cristal Noir",
+    "category": "informatique",
+    "subcategory": "Stylos & Écriture",
+    "inventory_number": "ISMAC-BUR-2026-011",
     "serial_number": "N/A",
-    "inventory_number": "ISMAC-BUR-2026-015",
-    "stock": 35,
-    "unit": "Unité",
-    "icon": "folder",
+    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
+    "stock": 15
+  },
+  {
+    "id": "BUR-STY-03",
+    "name": "Marqueurs pour tableau blanc (Pack 4 couleurs)",
+    "category": "informatique",
+    "subcategory": "Stylos & Écriture",
+    "inventory_number": "ISMAC-BUR-2026-012",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
+    "stock": 25
+  },
+  {
+    "id": "BUR-STY-04",
+    "name": "Surligneurs Stabilo Boss (Pack 4 couleurs)",
+    "category": "informatique",
+    "subcategory": "Stylos & Écriture",
+    "inventory_number": "ISMAC-BUR-2026-013",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
+    "stock": 30
+  },
+  {
+    "id": "BUR-TON-01",
+    "name": "Cartouche Toner HP LaserJet 85A Noir Original",
+    "category": "informatique",
+    "subcategory": "Toner & Encre",
+    "inventory_number": "ISMAC-BUR-2026-020",
+    "serial_number": "SN-TONER-85A",
+    "image_url": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&auto=format&fit=crop&q=80",
+    "stock": 10
+  },
+  {
+    "id": "BUR-TON-02",
+    "name": "Cartouche Toner HP LaserJet 83A Noir Original",
+    "category": "informatique",
+    "subcategory": "Toner & Encre",
+    "inventory_number": "ISMAC-BUR-2026-021",
+    "serial_number": "SN-TONER-83A",
+    "image_url": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&auto=format&fit=crop&q=80",
+    "stock": 8
+  },
+  {
+    "id": "BUR-TON-03",
+    "name": "Cartouche d'encre HP 652 Noir Originale",
+    "category": "informatique",
+    "subcategory": "Toner & Encre",
+    "inventory_number": "ISMAC-BUR-2026-022",
+    "serial_number": "SN-INK-652B",
+    "image_url": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&auto=format&fit=crop&q=80",
+    "stock": 12
+  },
+  {
+    "id": "BUR-TON-04",
+    "name": "Cartouche d'encre HP 652 Couleur Originale",
+    "category": "informatique",
+    "subcategory": "Toner & Encre",
+    "inventory_number": "ISMAC-BUR-2026-023",
+    "serial_number": "SN-INK-652C",
+    "image_url": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&auto=format&fit=crop&q=80",
+    "stock": 10
+  },
+  {
+    "id": "BUR-ACC-01",
+    "name": "Classeurs à levier dos 80mm A4",
+    "category": "informatique",
+    "subcategory": "Classement & Accessoires",
+    "inventory_number": "ISMAC-BUR-2026-030",
+    "serial_number": "N/A",
     "image_url": "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?w=400&auto=format&fit=crop&q=80",
-    "description": "Classeurs rigides pour archivage des dossiers et PV"
+    "stock": 45
+  },
+  {
+    "id": "BUR-ACC-02",
+    "name": "Boîte de 10 Chemises cartonnées avec élastique",
+    "category": "informatique",
+    "subcategory": "Classement & Accessoires",
+    "inventory_number": "ISMAC-BUR-2026-031",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?w=400&auto=format&fit=crop&q=80",
+    "stock": 25
+  },
+  {
+    "id": "BUR-ACC-03",
+    "name": "Agrafeuse de bureau métal 24/6",
+    "category": "informatique",
+    "subcategory": "Classement & Accessoires",
+    "inventory_number": "ISMAC-BUR-2026-032",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
+    "stock": 15
+  },
+  {
+    "id": "BUR-ACC-04",
+    "name": "Boîtes d'agrafes 24/6 (Paquet de 1000)",
+    "category": "informatique",
+    "subcategory": "Classement & Accessoires",
+    "inventory_number": "ISMAC-BUR-2026-033",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
+    "stock": 40
+  },
+  {
+    "id": "BUR-ACC-05",
+    "name": "Ciseaux de bureau acier inoxydable 21cm",
+    "category": "informatique",
+    "subcategory": "Classement & Accessoires",
+    "inventory_number": "ISMAC-BUR-2026-034",
+    "serial_number": "N/A",
+    "image_url": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80",
+    "stock": 15
   }
-]
-;
+];
     const beneficiaries = [
   {
     "id": "BEN-01",
@@ -472,7 +941,18 @@
 ]
 ;
     let currentDoc = 'audiovisuel';
+    let currentSubCat = 'ALL';
+    let viewMode = 'grid'; // 'grid' or 'table'
     let basket = {};
+
+    // Categories mapping per document
+    const subCategories = {
+      audiovisuel: ["ALL", "Image & Caméras", "Optiques & Objectifs", "Son & Micros", "Machinerie & Supports", "Éclairage & Lumière", "Câblage", "Énergie & Batteries", "Cartes mémoires & Lecteurs"],
+      informatique: ["ALL", "Disques externes & SSD", "Clés USB", "Câbles & Adaptateurs", "Papiers & Blocs", "Stylos & Écriture", "Toner & Encre", "Classement & Accessoires"],
+      detaillee: ["ALL", "Image & Caméras", "Optiques & Objectifs", "Son & Micros", "Machinerie & Supports", "Énergie & Batteries", "Cartes mémoires & Lecteurs"],
+      pv: ["ALL", "Image & Caméras", "Son & Micros", "Machinerie & Supports", "Éclairage & Lumière", "Câblage"],
+      sortie: ["ALL", "Image & Caméras", "Optiques & Objectifs", "Son & Micros", "Machinerie & Supports", "Énergie & Batteries", "Cartes mémoires & Lecteurs"]
+    };
 
     document.addEventListener('DOMContentLoaded', () => {
       const today = new Date();
@@ -496,8 +976,24 @@
       selectDoc('audiovisuel');
     });
 
+    function setViewMode(mode) {
+      viewMode = mode;
+      const bGrid = document.getElementById('view-mode-grid');
+      const bTable = document.getElementById('view-mode-table');
+      if (mode === 'grid') {
+        bGrid.className = "px-2.5 py-1 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-900 flex items-center gap-1";
+        bTable.className = "px-2.5 py-1 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-900 flex items-center gap-1";
+      } else {
+        bTable.className = "px-2.5 py-1 text-xs font-bold rounded-lg bg-white shadow-sm text-slate-900 flex items-center gap-1";
+        bGrid.className = "px-2.5 py-1 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-900 flex items-center gap-1";
+      }
+      renderCatalog();
+    }
+
     function selectDoc(docKey) {
       currentDoc = docKey;
+      currentSubCat = 'ALL';
+
       ['audiovisuel', 'informatique', 'detaillee', 'pv', 'sortie'].forEach(k => {
         const el = document.getElementById(`btn-${k}`);
         if (k === docKey) {
@@ -530,55 +1026,149 @@
         titleEl.textContent = "BON DE SORTIE DE MATÉRIEL";
       }
 
+      renderSubCatPills();
       renderCatalog();
     }
 
+    function renderSubCatPills() {
+      const bar = document.getElementById('subcat-bar');
+      bar.innerHTML = '';
+      const list = subCategories[currentDoc] || ["ALL"];
+      list.forEach(cat => {
+        const btn = document.createElement('button');
+        const isActive = (cat === currentSubCat);
+        btn.className = `px-2.5 py-1 rounded-lg text-[11px] font-bold transition ${isActive ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`;
+        btn.textContent = cat === 'ALL' ? '🌟 Tous' : cat;
+        btn.onclick = () => {
+          currentSubCat = cat;
+          renderSubCatPills();
+          renderCatalog();
+        };
+        bar.appendChild(btn);
+      });
+    }
+
     function renderCatalog() {
-      const q = document.getElementById('search-box').value.toLowerCase();
-      const grid = document.getElementById('catalog-grid');
-      grid.innerHTML = '';
+      const q = document.getElementById('search-box').value.toLowerCase().trim();
+      const container = document.getElementById('catalog-container');
+      container.innerHTML = '';
 
       const filtered = inventory.filter(it => {
-        if (currentDoc === 'audiovisuel' || currentDoc === 'detaillee') {
+        if (currentDoc === 'audiovisuel' || currentDoc === 'detaillee' || currentDoc === 'pv' || currentDoc === 'sortie') {
           if (it.category !== 'audiovisuel') return false;
         } else if (currentDoc === 'informatique') {
-          if (it.category !== 'informatique' && it.category !== 'bureau') return false;
+          if (it.category !== 'informatique') return false;
         }
-        return it.name.toLowerCase().includes(q) || (it.serial_number && it.serial_number.toLowerCase().includes(q));
+
+        if (currentSubCat !== 'ALL' && it.subcategory !== currentSubCat) return false;
+
+        const matchQ = (
+          it.name.toLowerCase().includes(q) ||
+          (it.subcategory && it.subcategory.toLowerCase().includes(q)) ||
+          (it.inventory_number && it.inventory_number.toLowerCase().includes(q)) ||
+          (it.serial_number && it.serial_number.toLowerCase().includes(q))
+        );
+        return matchQ;
       });
 
-      filtered.forEach(it => {
-        const inB = basket[it.id];
-        const qty = inB ? inB.quantity : 0;
-        const card = document.createElement('div');
-        card.className = "bg-white border border-slate-200 rounded-xl overflow-hidden card-hover flex flex-col justify-between";
-        card.innerHTML = `
-          <div>
-            <div class="h-28 w-full bg-slate-100 relative">
-              <img src="${it.image_url}" class="w-full h-full object-cover">
-              <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded text-[9px] font-bold bg-slate-900/80 text-white">${it.subcategory || it.category}</span>
-            </div>
-            <div class="p-3">
-              <h5 class="font-bold text-xs text-slate-900 line-clamp-2">${it.name}</h5>
-              <div class="text-[10px] text-slate-400 font-mono mt-0.5">${it.inventory_number || ''}</div>
-            </div>
-          </div>
-          <div class="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-            ${qty > 0 ? `
-              <div class="flex items-center justify-between w-full bg-indigo-50 border border-indigo-200 rounded-lg px-2 py-1">
-                <button onclick="changeQty('${it.id}', -1)" class="w-5 h-5 rounded bg-white font-bold text-xs text-indigo-700">-</button>
-                <span class="text-xs font-bold text-indigo-900">${qty}</span>
-                <button onclick="changeQty('${it.id}', 1)" class="w-5 h-5 rounded bg-indigo-600 font-bold text-xs text-white">+</button>
-              </div>
-            ` : `
-              <button onclick="changeQty('${it.id}', 1)" class="w-full py-1 rounded-lg bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold transition">
-                + Ajouter
-              </button>
-            `}
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white border border-slate-200 rounded-2xl py-12 text-center text-slate-400">
+            <p class="text-xs font-bold text-slate-700">Aucun article trouvé.</p>
+            <p class="text-[11px] mt-1">Essayez un autre mot-clé ou changez de sous-catégorie.</p>
           </div>
         `;
-        grid.appendChild(card);
-      });
+        return;
+      }
+
+      // 1. GRID CARDS VIEW
+      if (viewMode === 'grid') {
+        const grid = document.createElement('div');
+        grid.className = "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5";
+        filtered.forEach(it => {
+          const inB = basket[it.id];
+          const qty = inB ? inB.quantity : 0;
+          const card = document.createElement('div');
+          card.className = "bg-white border border-slate-200 rounded-xl overflow-hidden card-hover flex flex-col justify-between";
+          card.innerHTML = `
+            <div>
+              <div class="h-28 w-full bg-slate-100 relative">
+                <img src="${it.image_url}" class="w-full h-full object-cover">
+                <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded text-[9px] font-bold bg-slate-900/80 text-white">${it.subcategory}</span>
+                <span class="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-600 text-white">Stock: ${it.stock}</span>
+              </div>
+              <div class="p-3">
+                <h5 class="font-bold text-xs text-slate-900 line-clamp-2">${it.name}</h5>
+                <div class="text-[10px] text-slate-400 font-mono mt-1">${it.inventory_number || ''} ${it.serial_number && it.serial_number !== 'N/A' ? '• S/N: ' + it.serial_number : ''}</div>
+              </div>
+            </div>
+            <div class="p-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+              ${qty > 0 ? `
+                <div class="flex items-center justify-between w-full bg-indigo-50 border border-indigo-200 rounded-lg px-2 py-1">
+                  <button onclick="changeQty('${it.id}', -1)" class="w-5 h-5 rounded bg-white font-bold text-xs text-indigo-700 shadow-sm">-</button>
+                  <span class="text-xs font-bold text-indigo-900">${qty}</span>
+                  <button onclick="changeQty('${it.id}', 1)" class="w-5 h-5 rounded bg-indigo-600 font-bold text-xs text-white shadow-sm">+</button>
+                </div>
+              ` : `
+                <button onclick="changeQty('${it.id}', 1)" class="w-full py-1.5 rounded-lg bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold transition">
+                  + Ajouter
+                </button>
+              `}
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+        container.appendChild(grid);
+      } 
+      // 2. COMPACT TABLE VIEW (Optimized for 200+ items selection)
+      else {
+        const tableCard = document.createElement('div');
+        tableCard.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm";
+        let rowsHtml = '';
+        filtered.forEach(it => {
+          const inB = basket[it.id];
+          const qty = inB ? inB.quantity : 0;
+          rowsHtml += `
+            <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+              <td class="px-3 py-2 text-xs font-bold text-slate-900">${it.name}</td>
+              <td class="px-3 py-2 text-[11px] text-slate-500">${it.subcategory}</td>
+              <td class="px-3 py-2 text-[11px] font-mono text-slate-400">${it.inventory_number || ''}</td>
+              <td class="px-3 py-2 text-[11px] font-mono text-slate-500">${it.serial_number || '—'}</td>
+              <td class="px-3 py-2 text-right">
+                ${qty > 0 ? `
+                  <div class="inline-flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 rounded-lg px-2 py-0.5">
+                    <button onclick="changeQty('${it.id}', -1)" class="w-5 h-5 rounded bg-white font-bold text-xs text-indigo-700">-</button>
+                    <span class="text-xs font-bold text-indigo-900 w-4 text-center">${qty}</span>
+                    <button onclick="changeQty('${it.id}', 1)" class="w-5 h-5 rounded bg-indigo-600 text-white font-bold text-xs">+</button>
+                  </div>
+                ` : `
+                  <button onclick="changeQty('${it.id}', 1)" class="px-3 py-1 rounded-lg bg-slate-900 hover:bg-indigo-600 text-white font-bold text-[11px] transition">
+                    + Ajouter
+                  </button>
+                `}
+              </td>
+            </tr>
+          `;
+        });
+
+        tableCard.innerHTML = `
+          <div class="overflow-x-auto max-h-[500px]">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 sticky top-0 z-10 font-bold">
+                <tr>
+                  <th class="px-3 py-2.5">Désignation</th>
+                  <th class="px-3 py-2.5">Sous-catégorie</th>
+                  <th class="px-3 py-2.5">N° Inventaire</th>
+                  <th class="px-3 py-2.5">N° de Série</th>
+                  <th class="px-3 py-2.5 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>
+        `;
+        container.appendChild(tableCard);
+      }
     }
 
     function changeQty(id, delta) {
@@ -633,30 +1223,30 @@
       });
     }
 
-    // EXACT PRINT RENDERING
+    // PRINT EXACT ADMINISTRATIVE TEMPLATES (NO BROWSER HEADERS/FOOTERS)
     function printExactDocument() {
       const items = Object.values(basket);
       if (items.length === 0) {
-        alert("Veuillez ajouter au moins un article.");
+        alert("Veuillez sélectionner au moins un article.");
         return;
       }
 
       let content = '';
 
-      // FOOTER 1: Standard ISMAC 3-column footer with exact black line
-      const footerStandard = `
-        <div style="margin-top: 60px; border-top: 1.5px solid #000; padding-top: 8px; font-family: Arial, sans-serif; font-size: 8.5pt; line-height: 1.4;">
+      // OFFICIAL ISMAC FOOTER (Documents 1, 2, 3)
+      const footerOfficial = `
+        <div style="margin-top: 50px; border-top: 1.5px solid #000; padding-top: 8px; font-family: Arial, sans-serif; font-size: 8pt; line-height: 1.35;">
           <table style="width: 100%; border: none; border-collapse: collapse;">
             <tr>
-              <td style="width: 28%; vertical-align: top; text-align: left; border: none; padding: 0; font-size: 8.5pt;">
+              <td style="width: 28%; vertical-align: top; text-align: left; border: none; padding: 0;">
                 Tél. : 212 (0)5 37 27 17 00<br>
                 Fax : 212 (0)5 37 77 38 65
               </td>
-              <td style="width: 44%; vertical-align: top; text-align: center; border: none; padding: 0; font-size: 8pt;">
+              <td style="width: 44%; vertical-align: top; text-align: center; border: none; padding: 0; font-size: 7.5pt;">
                 ISMAC - Av. Allal El Fassi, Cité Al Irfane B.P 6598 - Souissi, Rabat/Maroc<br>
                 شارع علال الفاسي - مدينة العرفان السويسي - الرباط - المغرب - ص.ب 6598
               </td>
-              <td style="width: 28%; vertical-align: top; text-align: right; border: none; padding: 0; font-size: 8.5pt;">
+              <td style="width: 28%; vertical-align: top; text-align: right; border: none; padding: 0;">
                 E-mail: info@ismac.ac.ma<br>
                 www.ismac.ac.ma
               </td>
@@ -665,22 +1255,22 @@
         </div>
       `;
 
-      // FOOTER 2: Exact Orange ISMAC Banner (Rabat & Dakhla) from PV d'affectation
-      const footerOrangePv = `
-        <div style="margin-top: 40px; background-color: #d84315; color: white; padding: 10px 14px; border-radius: 1px; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
+      // OFFICIAL ORANGE ISMAC BANNER (Document 4 PV d'Affectation)
+      const orangeBannerPv = `
+        <div style="margin-top: 35px; background-color: #d84315; color: white; padding: 10px 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
           <table style="width: 100%; border: none; color: white; border-collapse: collapse; font-size: 8.5pt;">
             <tr>
               <td style="width: 40%; vertical-align: top; border: none; padding: 0; line-height: 1.35;">
                 <strong style="font-size: 9pt;">Siège - Rabat :</strong><br>
                 Av. Allal Al Fassi, Cité Al Irfane<br>
-                BP 6598, Rabat / Maroc<br>
+                BP 6598 ,Rabat / Maroc<br>
                 +212 (0) 5 37 27 17 00
               </td>
               <td style="width: 2%; border-left: 1px solid white; border-right: none; border-top: none; border-bottom: none;"></td>
               <td style="width: 40%; vertical-align: top; border: none; padding-left: 12px; line-height: 1.35;">
                 <strong style="font-size: 9pt;">Annexe - Dakhla :</strong><br>
                 21, rue Al Walaa, ville de Dakhla<br>
-                (à côté de l'hôtel Al Bashir)<br>
+                (à côté de l'hôtel Al Bashir )<br>
                 +212 (0) 5 28 89 86 24
               </td>
               <td style="width: 18%; vertical-align: middle; text-align: right; border: none; padding: 0;">
@@ -688,7 +1278,7 @@
               </td>
             </tr>
           </table>
-          <div style="text-align: center; font-size: 9pt; margin-top: 6px; letter-spacing: 1px; border-top: 1px solid rgba(255,255,255,0.4); padding-top: 4px;">
+          <div style="text-align: center; font-size: 8.5pt; margin-top: 6px; letter-spacing: 1px; border-top: 1px solid rgba(255,255,255,0.4); padding-top: 4px;">
             🌐 www.ismac.ma
           </div>
         </div>
@@ -699,33 +1289,33 @@
         const dateV = document.getElementById('std-date').value.trim() || '10/07/2026';
         const rows = items.map(i => `
           <tr>
-            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 10.5pt;">${i.name}</td>
-            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 10.5pt;">${i.quantity}</td>
-            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 10.5pt;"></td>
+            <td style="border: 1px solid #000; padding: 4px 8px; font-size: 11pt;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 11pt;">${i.quantity}</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; font-size: 11pt;"></td>
           </tr>
         `).join('');
 
         content = `
-          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000;">
+          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; padding: 20px;">
             <div style="font-weight: bold; font-size: 14pt; margin-bottom: 22pt;">BON DE DÉCHARGE DE MATÉRIEL AUDIOVISUEL</div>
-            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 5pt;">RÉCUPÉRÉ PAR&nbsp; : <span style="font-weight: normal;">${ben.toUpperCase()}</span></div>
-            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 22pt;">DATE DE SORTIE : <span style="font-weight: normal;">${dateV}</span></div>
+            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 4pt;">RÉCUPÉRÉ PAR&nbsp; : <span style="font-weight: normal;">${ben.toUpperCase()}</span></div>
+            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 20pt;">DATE DE SORTIE : <span style="font-weight: normal;">${dateV}</span></div>
 
             <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">
               <thead>
                 <tr>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: left; width: 65%; font-weight: bold;">Matériel</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 20%; font-weight: bold;">Observations</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 65%; font-weight: bold;">Matériel</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 20%; font-weight: bold;">Observations</th>
                 </tr>
               </thead>
               <tbody>${rows}</tbody>
             </table>
 
-            <div style="margin-top: 60pt; text-align: right; font-weight: bold; font-size: 11pt; padding-right: 25pt;">
+            <div style="margin-top: 50pt; text-align: right; font-weight: bold; font-size: 11pt; padding-right: 20pt;">
               La personne concernée
             </div>
-            ${footerStandard}
+            ${footerOfficial}
           </div>
         `;
 
@@ -734,33 +1324,33 @@
         const dateV = document.getElementById('std-date').value.trim() || '05/05/2026';
         const rows = items.map(i => `
           <tr>
-            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 10.5pt;">${i.name}</td>
-            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 10.5pt;">${i.quantity}</td>
-            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 10.5pt;">—--------------</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; font-size: 11pt;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 11pt;">${i.quantity}</td>
+            <td style="border: 1px solid #000; padding: 4px 8px; text-align: center; font-size: 11pt;">—--------------</td>
           </tr>
         `).join('');
 
         content = `
-          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000;">
+          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; padding: 20px;">
             <div style="font-weight: bold; font-size: 14pt; margin-bottom: 22pt;">BON DE DÉCHARGE DE FOURNITURE INFORMATIQUE</div>
-            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 5pt;">RÉCUPÉRÉ PAR&nbsp; : <span style="font-weight: normal;">${ben.toUpperCase()} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
-            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 22pt;">DATE DE SORTIE : <span style="font-weight: normal;">${dateV}</span></div>
+            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 4pt;">RÉCUPÉRÉ PAR&nbsp; : <span style="font-weight: normal;">${ben.toUpperCase()} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+            <div style="font-weight: bold; font-size: 11pt; margin-bottom: 20pt;">DATE DE SORTIE : <span style="font-weight: normal;">${dateV}</span></div>
 
             <table style="width: 100%; border-collapse: collapse; font-size: 10pt;">
               <thead>
                 <tr>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: left; width: 65%; font-weight: bold;">Matériel</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 20%; font-weight: bold;">Observations</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 65%; font-weight: bold;">Matériel</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 20%; font-weight: bold;">Observations</th>
                 </tr>
               </thead>
               <tbody>${rows}</tbody>
             </table>
 
-            <div style="margin-top: 60pt; text-align: right; font-weight: bold; font-size: 11pt; padding-right: 25pt;">
+            <div style="margin-top: 50pt; text-align: right; font-weight: bold; font-size: 11pt; padding-right: 20pt;">
               La personne concernée
             </div>
-            ${footerStandard}
+            ${footerOfficial}
           </div>
         `;
 
@@ -774,7 +1364,7 @@
         const desig = document.getElementById('det-desig').value || 'CANON 5D M III + OBJECTIF CANON 50mm + 2 BATTERIES + CHARGEUR + SAC + CARTE SD 64GB + LECTEUR CARTE MÉMOIRE';
 
         content = `
-          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; line-height: 1.6;">
+          <div style="font-family: Arial, sans-serif; font-size: 11pt; color: #000; line-height: 1.6; padding: 25px 30px;">
             <div style="text-align: right; font-size: 11pt; margin-bottom: 25pt;">${villeDate}</div>
             <div style="text-align: center; font-weight: bold; font-size: 16pt; margin-bottom: 30pt;">
               BON DE DÉCHARGE<br>DU MATÉRIEL
@@ -802,38 +1392,38 @@
 
         const rows = items.map(i => `
           <tr>
-            <td style="border: 1px solid #000; padding: 6px 8px; font-size: 10pt;">${i.name}</td>
-            <td style="border: 1px solid #000; padding: 6px 8px; text-align: center; font-size: 10pt;">${i.inventory_number || 'ISMAC0001'}</td>
-            <td style="border: 1px solid #000; padding: 6px 8px; text-align: center; font-size: 10pt;">${String(i.quantity).padStart(2, '0')}</td>
-            <td style="border: 1px solid #000; padding: 6px 8px; font-size: 10pt;">${lieu}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 10pt;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 10pt;">${i.inventory_number || 'ISMAC0001'}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 10pt;">${String(i.quantity).padStart(2, '0')}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 10pt;">${lieu}</td>
           </tr>
         `).join('');
 
         content = `
-          <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.45;">
-            <div style="font-weight: bold; font-size: 13pt; margin-bottom: 14pt;">
+          <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.4; padding: 20px;">
+            <div style="font-weight: bold; font-size: 13pt; margin-bottom: 12pt;">
               PROCÈS-VERBAL D'AFFECTATION MATÉRIEL &nbsp; N° : ${numPv}
             </div>
-            <div style="margin-bottom: 5pt;"><strong>Objet du mouvement :</strong> ${obj}</div>
-            <div style="margin-bottom: 5pt;"><strong>Lieu d'installation :</strong> ${lieu}</div>
-            <div style="margin-bottom: 5pt;"><strong>Date d'exécution :</strong> ${dateEx}</div>
-            <div style="margin-bottom: 16pt;"><strong>Responsable de la mise en place :</strong> ${resp}</div>
+            <div style="margin-bottom: 4pt;"><strong>Objet du mouvement :</strong> ${obj}</div>
+            <div style="margin-bottom: 4pt;"><strong>Lieu d'installation :</strong> ${lieu}</div>
+            <div style="margin-bottom: 4pt;"><strong>Date d'exécution :</strong> ${dateEx}</div>
+            <div style="margin-bottom: 14pt;"><strong>Responsable de la mise en place :</strong> ${resp}</div>
 
             <table style="width: 100%; border-collapse: collapse; font-size: 9.5pt;">
               <thead>
                 <tr>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: left; width: 40%; font-weight: bold;">Désignation du Matériel</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 25%; font-weight: bold;">N° d'Inventaire</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: left; width: 20%; font-weight: bold;">Localisation</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 40%; font-weight: bold;">Désignation du Matériel</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 25%; font-weight: bold;">N° d'Inventaire</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 20%; font-weight: bold;">Localisation</th>
                 </tr>
               </thead>
               <tbody>${rows}</tbody>
             </table>
 
-            ${footerOrangePv}
+            ${orangeBannerPv}
 
-            <div style="margin-top: 35pt; display: flex; justify-content: space-between; font-weight: bold; font-size: 9.5pt; text-align: center;">
+            <div style="margin-top: 30pt; display: flex; justify-content: space-between; font-weight: bold; font-size: 9.5pt; text-align: center;">
               <div style="width: 30%;">Le magasinier<br><br>........................................</div>
               <div style="width: 40%;">Responsable de la mise en place<br><br>........................................</div>
               <div style="width: 30%;">Administration<br><br></div>
@@ -849,29 +1439,29 @@
 
         const rows = items.map(i => `
           <tr>
-            <td style="border: 1px solid #000; padding: 6px 8px; font-size: 10pt;">${i.name}</td>
-            <td style="border: 1px solid #000; padding: 6px 8px; text-align: center; font-size: 10pt;">${i.inventory_number || ''}</td>
-            <td style="border: 1px solid #000; padding: 6px 8px; text-align: center; font-size: 10pt;">${String(i.quantity).padStart(2, '0')}</td>
-            <td style="border: 1px solid #000; padding: 6px 8px; font-size: 10pt;"></td>
+            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 10pt;">${i.name}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 10pt;">${i.inventory_number || ''}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; text-align: center; font-size: 10pt;">${String(i.quantity).padStart(2, '0')}</td>
+            <td style="border: 1px solid #000; padding: 5px 8px; font-size: 10pt;"></td>
           </tr>
         `).join('');
 
         content = `
-          <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.45;">
-            <div style="font-weight: bold; font-size: 13pt; margin-bottom: 14pt;">
+          <div style="font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; line-height: 1.4; padding: 20px;">
+            <div style="font-weight: bold; font-size: 13pt; margin-bottom: 12pt;">
               BON DE SORTIE DE MATÉRIEL &nbsp; N° : ${numS}
             </div>
-            <div style="margin-bottom: 5pt;"><strong>Bénéficiaire :</strong> ${ben.toUpperCase()}</div>
-            <div style="margin-bottom: 5pt;"><strong>Motif de la sortie :</strong> ${motif}</div>
-            <div style="margin-bottom: 16pt;"><strong>Date de sortie du magasin :</strong> ${dateS}</div>
+            <div style="margin-bottom: 4pt;"><strong>Bénéficiaire :</strong> ${ben.toUpperCase()}</div>
+            <div style="margin-bottom: 4pt;"><strong>Motif de la sortie :</strong> ${motif}</div>
+            <div style="margin-bottom: 14pt;"><strong>Date de sortie du magasin :</strong> ${dateS}</div>
 
             <table style="width: 100%; border-collapse: collapse; font-size: 9.5pt;">
               <thead>
                 <tr>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: left; width: 45%; font-weight: bold;">Désignation précise du matériel</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 25%; font-weight: bold;">N° d'Inventaire</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
-                  <th style="border: 1px solid #000; padding: 6px 8px; text-align: center; width: 15%; font-weight: bold;">Observations / État</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: left; width: 45%; font-weight: bold;">Désignation précise du matériel</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 25%; font-weight: bold;">N° d'Inventaire</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Quantité</th>
+                  <th style="border: 1px solid #000; padding: 5px 8px; text-align: center; width: 15%; font-weight: bold;">Observations / État</th>
                 </tr>
               </thead>
               <tbody>${rows}</tbody>
@@ -890,10 +1480,10 @@
         <!DOCTYPE html>
         <html>
         <head>
-          <title>Document Officiel ISMAC</title>
+          <title>Document Administratif ISMAC</title>
           <style>
-            @page { size: A4 portrait; margin: 15mm 20mm 15mm 20mm; }
-            body { margin: 0; padding: 10px; background: white; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            @page { size: A4 portrait; margin: 10mm 15mm 10mm 15mm; }
+            body { margin: 0; padding: 0; background: white; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
           </style>
         </head>
         <body>
